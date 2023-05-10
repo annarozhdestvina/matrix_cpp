@@ -17,10 +17,12 @@ public:
     //int S21Matrix2; 
     
     void SumMatrix(const S21Matrix& other); 
+    void SubMatrix(const S21Matrix& other); 
     // Other methods..
     S21Matrix(int rows, int columns);
 
     void Fill();
+    void FillC();
 
     void Print() const {
         for(int i = 0; i < rows_; i++) {
@@ -43,6 +45,19 @@ void S21Matrix::SumMatrix(const S21Matrix& other) {
         for(int i = 0; i < rows_; i++) {
                 for(int j = 0; j < cols_; j++) {
                     matrix_[i][j] += other.matrix_[i][j];
+                }
+            }
+        }
+}
+
+void S21Matrix::SubMatrix(const S21Matrix& other) {
+    bool a;
+    a = EqMatrix(other);
+    std::cout << a <<std::endl;
+    if (a) {
+        for(int i = 0; i < rows_; i++) {
+                for(int j = 0; j < cols_; j++) {
+                    matrix_[i][j] -= other.matrix_[i][j];
                 }
             }
         }
@@ -80,6 +95,11 @@ void S21Matrix::Fill() {
     }
 }
 
+void S21Matrix::FillC() {
+    Fill();
+    matrix_[2][2] = 25;
+}
+
 //int S21Matrix::s_id_ = 8;
 
 S21Matrix::~S21Matrix() {             // Destructor
@@ -99,6 +119,11 @@ int main() {
     std::cout << "matrix B:\n";
     matB.Print();
 
+    S21Matrix matC(3, 3);
+    matC.FillC();
+    std::cout << "matrix C:\n";
+    matC.Print();
+
     bool a;
     a = matA.EqMatrix(matB);
     std::cout << "res of equalizing is " << a << std::endl;
@@ -110,13 +135,15 @@ int main() {
     a = matA.EqMatrix(matA1);
     std::cout << "res of equalizing is " << a << std::endl;
 
-    matA1.SumMatrix(matB);
-    std::cout << "after sum\n";
-    matA1.Print();
-
     matB.SumMatrix(matB);
     std::cout << "after sum\n";
     matB.Print();
+
+    std::cout << "matric C before sub\n";
+    matC.Print();
+    matC.SubMatrix(matB);
+    std::cout << "after sub\n";
+    matC.Print();
 
     return 0;
 }
