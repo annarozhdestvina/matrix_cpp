@@ -32,7 +32,21 @@ public:
     }
 
     bool EqMatrix(const S21Matrix& other);
+    
 };
+
+void S21Matrix::SumMatrix(const S21Matrix& other) {
+    bool a;
+    a = EqMatrix(other);
+    std::cout << a <<std::endl;
+    if (a) {
+        for(int i = 0; i < rows_; i++) {
+                for(int j = 0; j < cols_; j++) {
+                    matrix_[i][j] += other.matrix_[i][j];
+                }
+            }
+        }
+}
 
 bool S21Matrix::EqMatrix(const S21Matrix& other) {
     if (rows_ == other.rows_ && cols_ == other.cols_) {
@@ -61,7 +75,7 @@ void S21Matrix::Fill() {
     int k = 1;
     for(int i =0; i < rows_; i++) {
         for(int j =0; j < cols_; j++) {
-            matrix_[i][j] = ++k;
+            matrix_[i][j] = k++;
         }
     }
 }
@@ -75,9 +89,6 @@ S21Matrix::~S21Matrix() {             // Destructor
 }
 
 int main() {
-    const int rows = 3;
-    const int columns = 4;
-
     S21Matrix matA(4, 3);
     matA.Fill();
     std::cout << "matrix A:\n";
@@ -88,7 +99,24 @@ int main() {
     std::cout << "matrix B:\n";
     matB.Print();
 
-    
+    bool a;
+    a = matA.EqMatrix(matB);
+    std::cout << "res of equalizing is " << a << std::endl;
+
+    S21Matrix matA1(4, 3);
+    matA1.Fill();
+    std::cout << "matrix A1:\n";
+    matA1.Print();
+    a = matA.EqMatrix(matA1);
+    std::cout << "res of equalizing is " << a << std::endl;
+
+    matA1.SumMatrix(matB);
+    std::cout << "after sum\n";
+    matA1.Print();
+
+    matB.SumMatrix(matB);
+    std::cout << "after sum\n";
+    matB.Print();
 
     return 0;
 }

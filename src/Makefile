@@ -1,6 +1,5 @@
 CC=g++
-#CFLAGS=-Wall -Wextra -Werror -std=c++17
-CFLAGS=-std=c++17
+CFLAGS=-Wall -Wextra -Werror -std=c++17
 
 all: Azaza
 
