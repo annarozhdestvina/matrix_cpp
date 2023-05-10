@@ -34,6 +34,19 @@ public:
     bool EqMatrix(const S21Matrix& other);
 };
 
+bool S21Matrix::EqMatrix(const S21Matrix& other) {
+    if (rows_ == other.rows_ && cols_ == other.cols_) {
+        return true;
+        for(int i = 0; i < rows_; i++) {
+            for(int j = 0; j < cols_; j++) {
+                if (matrix_[i][j] - other.matrix_[i][j] > 1e-7) 
+                    return false;
+            }
+        }
+    } else 
+        return false;
+}
+
 S21Matrix::S21Matrix(int rows, int columns): rows_(rows), cols_(columns) {
     double *pointer = new double[rows_ * cols_ *sizeof(double)];
     double **matrix_local = new double*[rows_ * sizeof(double*)];
@@ -45,9 +58,10 @@ S21Matrix::S21Matrix(int rows, int columns): rows_(rows), cols_(columns) {
 }
 
 void S21Matrix::Fill() {
+    int k = 1;
     for(int i =0; i < rows_; i++) {
         for(int j =0; j < cols_; j++) {
-            matrix_[i][j] = i+j;
+            matrix_[i][j] = ++k;
         }
     }
 }
@@ -64,12 +78,17 @@ int main() {
     const int rows = 3;
     const int columns = 4;
 
-    S21Matrix mat(4, 3);
-    mat.Fill();
-    mat.Print();
+    S21Matrix matA(4, 3);
+    matA.Fill();
+    std::cout << "matrix A:\n";
+    matA.Print();
 
-    S21Matrix mat2;
+    S21Matrix matB(3, 3);
+    matB.Fill();
+    std::cout << "matrix B:\n";
+    matB.Print();
 
+    
 
     return 0;
 }
