@@ -5,13 +5,9 @@ private:
     // Attributes
     int rows_, cols_;         // Rows and columns
     double **matrix_;         // Pointer to the memory where the matrix is allocated
-
-
     static int s_id_;         // статическая переменная 
 public:
-    S21Matrix() : rows_{0}, cols_{0}, matrix_{nullptr} {
-
-    }              // Default constructor
+    S21Matrix() : rows_{0}, cols_{0}, matrix_{nullptr} {}          // Default constructor
     ~S21Matrix();               // Destructor
 
     //int S21Matrix2; 
@@ -24,6 +20,10 @@ public:
     void Fill();
     void FillC();
 
+    double getMatrix() const {
+        return **matrix_;
+    }
+
     void Print() const {
         for(int i = 0; i < rows_; i++) {
             for(int j = 0; j < cols_; j++) {
@@ -34,8 +34,52 @@ public:
     }
 
     bool EqMatrix(const S21Matrix& other);
+    int GetRow(); //метод получает значение числа строк
+    int GetCol(); //метод получает значение числа столбцов
+    double& operator()(int, int); //перегрузка скобок для матрицы
+    double operator()(int, int) const; //перегрузка скобок для матрицы
     
+    friend S21Matrix operator+(const S21Matrix &a, const S21Matrix &b);
+
+    void MulNumber(const double num);
 };
+
+void S21Matrix::MulNumber(const double num) {
+for(int i = 0; i < rows_; i++) {
+            for(int j = 0; j < cols_; j++) {
+                matrix_[i][j] *= num;
+            }
+    }
+}
+
+int S21Matrix::GetRow() //функция получает значение числа строк
+{
+    return (rows_);
+}
+
+int S21Matrix::GetCol() //функция получает значение числа столбцов
+{
+    return (cols_);
+}
+
+double S21Matrix::operator()(int row, int col) const//перегрузка круглых скобок для матрицы.
+{                             // Если m - матрица, то m(i,j) будет
+    return (matrix_[row][col]);  //означать i,j-тый элемент матрицы
+}
+
+double& S21Matrix::operator()(int row, int col)//перегрузка круглых скобок для матрицы.
+{                             // Если m - матрица, то m(i,j) будет
+    return (matrix_[row][col]);  //означать i,j-тый элемент матрицы
+}
+
+S21Matrix operator+(S21Matrix& a, S21Matrix& b) {
+    //return S21Matrix(a.getMatrix() + b.getMatrix());
+    S21Matrix temp(a.GetRow(), a.GetCol());
+    for (int i = 0; i < a.GetRow(); i++)
+        for (int j = 0; j < a.GetCol(); j++)
+            temp(i, j) = a(i, j) + b(i, j);
+    return(temp);
+}
 
 void S21Matrix::SumMatrix(const S21Matrix& other) {
     bool a;
@@ -53,7 +97,7 @@ void S21Matrix::SumMatrix(const S21Matrix& other) {
 void S21Matrix::SubMatrix(const S21Matrix& other) {
     bool a;
     a = EqMatrix(other);
-    std::cout << a <<std::endl;
+    //std::cout << a <<std::endl;
     if (a) {
         for(int i = 0; i < rows_; i++) {
                 for(int j = 0; j < cols_; j++) {
@@ -139,11 +183,28 @@ int main() {
     std::cout << "after sum\n";
     matB.Print();
 
+    S21Matrix matD(3, 3);
+    matD.Fill();
+    std::cout << "matrix D:\n";
+    matD.Print();
+
     std::cout << "matric C before sub\n";
     matC.Print();
-    matC.SubMatrix(matB);
+    matC.SubMatrix(matD);
     std::cout << "after sub\n";
     matC.Print();
+
+    std::cout << "matric A before mul on number\n";
+    matA.Print();
+    matA.MulNumber(4);
+    std::cout << "after mul on number\n";
+    matA.Print();
+
+    /*S21Matrix result_sub(3, 3);
+    result_sub.Fill();
+    result_sub = matA + matD;
+    std::cout << "overloading operator +\n";
+    result_sub.Print();*/
 
     return 0;
 }
