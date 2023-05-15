@@ -6,23 +6,20 @@ GTestFlags=-lgtest -lgtest_main
 
 all: Azaza
 
-test: test/test.out
-	./test/test.out
+test: test/test_main.out
+	./test/test_main.out
 
-test/test.out: test/test.o s21_matrix.o
+test/test_main.out: test/test_main.o s21_matrix.o test/test_eq.o
 	$(CC) $^ $(GTestFlags) -o $@
+
+test/test_eq.o: test/test_eq.cc s21_matrix.h
+	$(CC) -c $(CFLAGS) $< -o $@
+
+test/test_main.o: test/test_main.cc s21_matrix.h
+	$(CC) -c $(CFLAGS) $< -o $@
 
 s21_matrix.o: s21_matrix.cc s21_matrix.h
 	$(CC) -c $(CFLAGS) $< -o $@
-
-test/test.o: test/test.cc s21_matrix.h
-	$(CC) -c $(CFLAGS) $< -o $@
-
-#main.out: main.o 
-#$(CC) main.o $(GTestFlags) -o main.out
-
-#main.o: s21_matrix.cc s21_matrix.h
-#	$(CC) -c s21_matrix.cc $(CFLAGS) -o $@
 
 Azaza: main.out
 	./main.out
