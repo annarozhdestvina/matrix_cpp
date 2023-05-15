@@ -1,48 +1,33 @@
 #include <iostream>
+#include "s21_matrix.h"
+//#include "googletest/googletest/gtest/include/gtest/gtest.h"
 
-class S21Matrix {
-private:
-    // Attributes
-    int rows_, cols_;         // Rows and columns
-    double **matrix_;         // Pointer to the memory where the matrix is allocated
-    static int s_id_;         // статическая переменная 
-public:
-    S21Matrix() : rows_{0}, cols_{0}, matrix_{nullptr} {}          // Default constructor
-    ~S21Matrix();               // Destructor
-
-    //int S21Matrix2; 
-    
-    void SumMatrix(const S21Matrix& other); 
-    void SubMatrix(const S21Matrix& other); 
-    // Other methods..
-    S21Matrix(int rows, int columns);
-
-    void Fill();
-    void FillC();
-
-    double getMatrix() const {
-        return **matrix_;
-    }
-
-    void Print() const {
-        for(int i = 0; i < rows_; i++) {
-            for(int j = 0; j < cols_; j++) {
-                std::cout<< matrix_[i][j] << ' ';
-            }
-            std::cout << '\n';
+void S21Matrix::Print() const {
+    for(int i = 0; i < rows_; i++) {
+        for(int j = 0; j < cols_; j++) {
+            std::cout<< matrix_[i][j] << ' ';
         }
+        std::cout << '\n';
     }
+}
 
-    bool EqMatrix(const S21Matrix& other);
-    int GetRow(); //метод получает значение числа строк
-    int GetCol(); //метод получает значение числа столбцов
-    double& operator()(int, int); //перегрузка скобок для матрицы
-    double operator()(int, int) const; //перегрузка скобок для матрицы
-    
-    friend S21Matrix operator+(const S21Matrix &a, const S21Matrix &b);
-
-    void MulNumber(const double num);
-};
+void S21Matrix::MulMatrix(const S21Matrix& other) {
+    S21Matrix temp(rows_, cols_);
+    if (rows_ == other.cols_) {
+        for(int i = 0; i < rows_; i++) {
+            for(int j = 0; j < other.cols_; j++) {
+                for(int inner = 0; inner < cols_; inner++) {
+                    temp.matrix_[i][j] = 0;
+                    temp.matrix_[i][j] += matrix_[i][inner] * other.matrix_[inner][j];
+                    matrix_[i][j] = 0;
+                    matrix_[i][j] = temp.matrix_[i][j];
+                    //matrix_[i][j] = temp.matrix_[i][j];
+                }
+            }
+        }
+    } else
+        std::cout << "error calc\n";
+}
 
 void S21Matrix::MulNumber(const double num) {
 for(int i = 0; i < rows_; i++) {
@@ -152,59 +137,7 @@ S21Matrix::~S21Matrix() {             // Destructor
         cols_ = 0;
 }
 
-int main() {
-    S21Matrix matA(4, 3);
-    matA.Fill();
-    std::cout << "matrix A:\n";
-    matA.Print();
+// TEST(Test_Name, Subtest) {
+    // ASSERT_TRUE(1 == 1);
+// }
 
-    S21Matrix matB(3, 3);
-    matB.Fill();
-    std::cout << "matrix B:\n";
-    matB.Print();
-
-    S21Matrix matC(3, 3);
-    matC.FillC();
-    std::cout << "matrix C:\n";
-    matC.Print();
-
-    bool a;
-    a = matA.EqMatrix(matB);
-    std::cout << "res of equalizing is " << a << std::endl;
-
-    S21Matrix matA1(4, 3);
-    matA1.Fill();
-    std::cout << "matrix A1:\n";
-    matA1.Print();
-    a = matA.EqMatrix(matA1);
-    std::cout << "res of equalizing is " << a << std::endl;
-
-    matB.SumMatrix(matB);
-    std::cout << "after sum\n";
-    matB.Print();
-
-    S21Matrix matD(3, 3);
-    matD.Fill();
-    std::cout << "matrix D:\n";
-    matD.Print();
-
-    std::cout << "matric C before sub\n";
-    matC.Print();
-    matC.SubMatrix(matD);
-    std::cout << "after sub\n";
-    matC.Print();
-
-    std::cout << "matric A before mul on number\n";
-    matA.Print();
-    matA.MulNumber(4);
-    std::cout << "after mul on number\n";
-    matA.Print();
-
-    /*S21Matrix result_sub(3, 3);
-    result_sub.Fill();
-    result_sub = matA + matD;
-    std::cout << "overloading operator +\n";
-    result_sub.Print();*/
-
-    return 0;
-}
