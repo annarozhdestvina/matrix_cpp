@@ -8,6 +8,8 @@ public:
     S21Matrix() : rows_{0}, cols_{0}, matrix_{nullptr} {}          // Default constructor
     ~S21Matrix();               // Destructor
 
+    S21Matrix(const S21Matrix& other);
+
     //int S21Matrix2; 
     
     void SumMatrix(const S21Matrix& other); 

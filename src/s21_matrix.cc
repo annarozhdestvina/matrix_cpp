@@ -5,11 +5,14 @@
 void S21Matrix::Print() const {
     for(int i = 0; i < rows_; i++) {
         for(int j = 0; j < cols_; j++) {
-            std::cout<< matrix_[i][j] << ' ';
+            std::cout<< matrix_[i][j] << '\t';
         }
         std::cout << '\n';
     }
 }
+
+S21Matrix::S21Matrix(const S21Matrix& other) : 
+rows_{other.rows_}, cols_{other.cols_}, matrix_{other.matrix_} {}
 
 void S21Matrix::MulMatrix(const S21Matrix& other) {
     S21Matrix temp(rows_, cols_);
@@ -132,6 +135,7 @@ void S21Matrix::FillC() {
 //int S21Matrix::s_id_ = 8;
 
 S21Matrix::~S21Matrix() {             // Destructor
+        delete matrix_[0];
         delete[] matrix_;
         rows_ = 0;
         cols_ = 0;
