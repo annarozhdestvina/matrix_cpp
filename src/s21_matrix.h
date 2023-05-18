@@ -34,6 +34,7 @@ public:
     double operator()(int, int) const; //перегрузка скобок для матрицы
     
     friend S21Matrix operator+(const S21Matrix &a, const S21Matrix &b);
+    friend S21Matrix operator-(const S21Matrix &a, const S21Matrix &b);
 
     void MulNumber(const double num);
     void MulMatrix(const S21Matrix& other);

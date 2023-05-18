@@ -81,7 +81,17 @@ S21Matrix operator+(const S21Matrix& a, const S21Matrix& b) {
         for (int j = 0; j < a.cols_; j++)
             temp(i, j) = a(i, j) + b(i, j);
     return(temp);
-    // return a.SubMatrix(b);
+}
+
+S21Matrix operator-(const S21Matrix& a, const S21Matrix& b) {
+    if (a.cols_ != b.cols_ || a.rows_ != b.rows_) {
+        throw std::out_of_range("Different matrix dimensions");
+    }
+    S21Matrix temp(a.rows_, a.cols_);
+    for (int i = 0; i < a.rows_; i++)
+        for(int j = 0; j < a.cols_; j++)
+            temp(i, j) = a(i, j) - b(i, j);
+    return temp;
 }
 
 void S21Matrix::SumMatrix(const S21Matrix& other) {
