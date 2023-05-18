@@ -65,3 +65,20 @@ TEST(test_eq, test7) {
     EXPECT_TRUE(m1.EqMatrix(m1));    
 }
 
+TEST(test_eq, test8) {
+    S21Matrix m1(2, 4);
+    m1.Fill();
+
+    S21Matrix m2(2, 4);
+    m2(0, 0) = 1.0;
+    m2(0, 1) = 2.0;
+    m2(0, 2) = 3.0;
+    m2(0, 3) = 4.0;
+    m2(1, 0) = 5.0;
+    m2(1, 1) = 6.0;
+    m2(1, 2) = 7.0;
+    m2(1, 3) = 8.0;
+
+    EXPECT_TRUE(m2.EqMatrix(m1));    
+}
+
