@@ -1,5 +1,9 @@
 #include <iostream>
 #include "s21_matrix.h"
+
+double s21_fabs(double a) {
+    return (a < 0.0) ? -a : a;
+}
 //#include "googletest/googletest/gtest/include/gtest/gtest.h"
 
 void S21Matrix::Print() const {
@@ -11,14 +15,16 @@ void S21Matrix::Print() const {
     }
 }
 
-// S21Matrix::S21Matrix(const S21Matrix& other) : 
-// rows_{other.rows_}, cols_{other.cols_}, matrix_{other.matrix_} {}
-
 S21Matrix::S21Matrix(const S21Matrix& other) : 
-    rows_{other.rows_}, cols_{other.cols_}, matrix_{new double* [rows_]} {
+    rows_{other.rows_}, cols_{other.cols_}, matrix_{new double* [other.rows_]} {
         for (int i =0; i < rows_; i++) 
             matrix_[i] = new double[other.cols_];
+        
+    for (int i = 0; i < other.rows_; i++) {
+        for (int j = 0; j < other.cols_; j++) 
+            matrix_[i][j] = other.matrix_[i][j];
     }
+}
 
 void S21Matrix::MulMatrix(const S21Matrix& other) {
     S21Matrix temp(rows_, cols_);
@@ -67,7 +73,6 @@ double& S21Matrix::operator()(int row, int col)//перегрузка кругл
 }
 
 S21Matrix operator+(S21Matrix& a, S21Matrix& b) {
-    //return S21Matrix(a.getMatrix() + b.getMatrix());
     S21Matrix temp(a.GetRow(), a.GetCol());
     for (int i = 0; i < a.GetRow(); i++)
         for (int j = 0; j < a.GetCol(); j++)
@@ -91,7 +96,6 @@ void S21Matrix::SumMatrix(const S21Matrix& other) {
 void S21Matrix::SubMatrix(const S21Matrix& other) {
     bool a;
     a = EqMatrix(other);
-    //std::cout << a <<std::endl;
     if (a) {
         for(int i = 0; i < rows_; i++) {
                 for(int j = 0; j < cols_; j++) {
@@ -102,16 +106,15 @@ void S21Matrix::SubMatrix(const S21Matrix& other) {
 }
 
 bool S21Matrix::EqMatrix(const S21Matrix& other) {
-    if (rows_ == other.rows_ && cols_ == other.cols_) {
-        return true;
-        for(int i = 0; i < rows_; i++) {
-            for(int j = 0; j < cols_; j++) {
-                if (matrix_[i][j] - other.matrix_[i][j] > 1e-7) 
-                    return false;
-            }
-        }
-    } else 
+    if (rows_ != other.rows_ || cols_ != other.cols_) 
         return false;
+
+    for(int i = 0; i < rows_; i++) 
+        for(int j = 0; j < cols_; j++) 
+            if (s21_fabs(matrix_[i][j] - other.matrix_[i][j]) > 1e-7) 
+                return false;
+    
+    return true;
 }
 
 S21Matrix::S21Matrix(int rows, int columns): rows_(rows), cols_(columns) {
@@ -138,8 +141,6 @@ void S21Matrix::FillC() {
     matrix_[2][2] = 25;
 }
 
-//int S21Matrix::s_id_ = 8;
-
 S21Matrix::~S21Matrix() {             // Destructor
         delete matrix_[0];
         delete[] matrix_;
@@ -147,7 +148,18 @@ S21Matrix::~S21Matrix() {             // Destructor
         cols_ = 0;
 }
 
-// TEST(Test_Name, Subtest) {
-    // ASSERT_TRUE(1 == 1);
-// }
 
+/*int main() {
+    S21Matrix m1(2, 4);
+    m1.Fill();
+    m1.Print();
+    m1(1, 1) = 6.4;
+    m1.Print();
+
+    S21Matrix m2(m1);
+    m1(1, 1) = 33.4;
+    std::cout << "m1 print\n";
+    m1.Print();
+    std::cout << "m2 print\n";
+    m2.Print();
+}*/
