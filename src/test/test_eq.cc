@@ -8,7 +8,6 @@ TEST(my_tests_eq, test1) {
     S21Matrix m2(3, 4);
     m2.Fill();
 
-
     EXPECT_TRUE(m1.EqMatrix(m2));
 }
 
@@ -47,5 +46,22 @@ TEST(test_eq, test5) {
     m1(0, 0) = 55.12;
 
     EXPECT_EQ(m1.EqMatrix(m2), 0);
+}
+
+TEST(test_eq, test6) {
+    S21Matrix m1(6, 6);
+    m1.Fill();
+
+    S21Matrix m2(7, 7);
+    m2.Fill();
+
+    EXPECT_FALSE(m2.EqMatrix(m1));
+}
+
+TEST(test_eq, test7) {
+    S21Matrix m1(6, 6);
+    m1.Fill();
+
+    EXPECT_TRUE(m1.EqMatrix(m1));    
 }
 
