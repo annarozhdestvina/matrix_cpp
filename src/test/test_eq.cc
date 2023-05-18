@@ -34,7 +34,7 @@ TEST(test_eq, test4) {
     S21Matrix m1(2, 4);
     m1.Fill();
 
-    // S21Matrix m2(m1);
-    // EXPECT_TRUE(m1.EqMatrix(m2));
+    S21Matrix m2(m1);
+    EXPECT_TRUE(m1.EqMatrix(m2));
 }
 

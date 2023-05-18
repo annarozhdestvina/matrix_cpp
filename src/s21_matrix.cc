@@ -11,8 +11,14 @@ void S21Matrix::Print() const {
     }
 }
 
+// S21Matrix::S21Matrix(const S21Matrix& other) : 
+// rows_{other.rows_}, cols_{other.cols_}, matrix_{other.matrix_} {}
+
 S21Matrix::S21Matrix(const S21Matrix& other) : 
-rows_{other.rows_}, cols_{other.cols_}, matrix_{other.matrix_} {}
+    rows_{other.rows_}, cols_{other.cols_}, matrix_{new double* [rows_]} {
+        for (int i =0; i < rows_; i++) 
+            matrix_[i] = new double[other.cols_];
+    }
 
 void S21Matrix::MulMatrix(const S21Matrix& other) {
     S21Matrix temp(rows_, cols_);
