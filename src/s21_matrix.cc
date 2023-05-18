@@ -72,13 +72,17 @@ double& S21Matrix::operator()(int row, int col)//перегрузка кругл
     return (matrix_[row][col]);  //означать i,j-тый элемент матрицы
 }
 
-/*S21Matrix operator+(const S21Matrix& a, const S21Matrix& b) {
-    S21Matrix temp(a.GetRow(), a.GetCol());
-    for (int i = 0; i < a.GetRow(); i++)
-        for (int j = 0; j < a.GetCol(); j++)
+S21Matrix operator+(const S21Matrix& a, const S21Matrix& b) {
+    if (a.cols_ != b.cols_ || a.rows_ != b.rows_) {
+            throw std::out_of_range("Different matrix dimensions");
+        }
+    S21Matrix temp(a.rows_, a.cols_);
+    for (int i = 0; i < a.rows_; i++)
+        for (int j = 0; j < a.cols_; j++)
             temp(i, j) = a(i, j) + b(i, j);
     return(temp);
-}*/
+    // return a.SubMatrix(b);
+}
 
 void S21Matrix::SumMatrix(const S21Matrix& other) {
     bool a;
