@@ -31,13 +31,8 @@ void S21Matrix::MulMatrix(const S21Matrix& other) {
         for(int i = 0; i < rows_; i++) {
             for(int j = 0; j < other.cols_; j++) {
                 temp.matrix_[i][j] = 0;
-                for(int inner = 0; inner < cols_; inner++) {
-                    // temp.matrix_[i][j] = 0;
+                for(int inner = 0; inner < cols_; inner++)
                     temp.matrix_[i][j] += matrix_[i][inner] * other.matrix_[inner][j];
-                    //matrix_[i][j] = 0;
-                    //matrix_[i][j] = temp.matrix_[i][j];
-                    //matrix_[i][j] = temp.matrix_[i][j];
-                }
             }
         }
     } else
