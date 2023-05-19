@@ -4,7 +4,6 @@
 double s21_fabs(double a) {
     return (a < 0.0) ? -a : a;
 }
-//#include "googletest/googletest/gtest/include/gtest/gtest.h"
 
 void S21Matrix::Print() const {
     for(int i = 0; i < rows_; i++) {
@@ -27,21 +26,27 @@ S21Matrix::S21Matrix(const S21Matrix& other) :
 }
 
 void S21Matrix::MulMatrix(const S21Matrix& other) {
-    S21Matrix temp(rows_, cols_);
+    S21Matrix temp(rows_, other.cols_);
     if (rows_ == other.cols_) {
         for(int i = 0; i < rows_; i++) {
             for(int j = 0; j < other.cols_; j++) {
+                temp.matrix_[i][j] = 0;
                 for(int inner = 0; inner < cols_; inner++) {
-                    temp.matrix_[i][j] = 0;
+                    // temp.matrix_[i][j] = 0;
                     temp.matrix_[i][j] += matrix_[i][inner] * other.matrix_[inner][j];
-                    matrix_[i][j] = 0;
-                    matrix_[i][j] = temp.matrix_[i][j];
+                    //matrix_[i][j] = 0;
+                    //matrix_[i][j] = temp.matrix_[i][j];
                     //matrix_[i][j] = temp.matrix_[i][j];
                 }
             }
         }
     } else
         std::cout << "error calc\n";
+    // return temp;
+    cols_ = other.cols_; 
+    for(int i = 0; i < rows_; i++)
+            for(int j = 0; j < other.cols_; j++)
+                matrix_[i][j] = temp.matrix_[i][j];
 }
 
 void S21Matrix::MulNumber(const double num) {
