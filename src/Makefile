@@ -1,10 +1,11 @@
 CC=g++
-#CFLAGS=-Wall -Wextra -Werror -std=c++17
-CFLAGS=-Wall -Wextra -std=c++17
-CFLAGS=-std=c++17
-GTestFlags=-lgtest -lgtest_main
+CFLAGS=-Wall -Wextra -Werror -std=c++17 #-fsanitize=address
+#CFLAGS=-Wall -Wextra -std=c++17
+#CFLAGS=-std=c++17 -fsanitize=address -fsanitize=undefined
+GTestFlags=-lgtest -lgtest_main #-fsanitize=address -fsanitize=undefined
 
 TEST_SOURCES=$(wildcard test/*.cc)
+VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER=valgrind_report
 # SOURCES=test/test_eq.cc test/test_mul_number.cc ...
 TEST_BINARIES=$(patsubst %.cc,%.o,$(TEST_SOURCES))
 
@@ -25,3 +26,19 @@ clean:
 	rm -rf *.o
 	rm -rf *.out
 	rm -rf test/*.out test/*.o
+
+leaks: clean test
+	leaks -atExit -- ./test/test_main.out
+
+
+valgrind: test/test_main.out
+	mkdir -p $(VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER)
+	-valgrind --leak-check=full --show-reachable=no --track-origins=yes --log-file=$(VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER)/valgrind_report.txt -s ./test/test_main.out > $(VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER)/test_report.txt
+	cat $(VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER)/test_report.txt
+	cat $(VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER)/valgrind_report.txt
+
+valgrind_full: test/test_main.out
+	mkdir -p $(VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER)
+	-valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --log-file=$(VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER)/valgrind_full_report.txt -s ./test/test_main.out > $(VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER)/test_report.txt
+	cat $(VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER)/test_report.txt
+	cat $(VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER)/valgrind_full_report.txt

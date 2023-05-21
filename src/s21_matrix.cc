@@ -1,5 +1,6 @@
 #include <iostream>
 #include "s21_matrix.h"
+#include <cmath>
 
 double s21_fabs(double a) {
     return (a < 0.0) ? -a : a;
@@ -16,7 +17,7 @@ void S21Matrix::Print() const {
 
 S21Matrix::S21Matrix(const S21Matrix& other) : 
     rows_{other.rows_}, cols_{other.cols_}, matrix_{new double* [other.rows_]} {
-        for (int i =0; i < rows_; i++) 
+        for (int i = 0; i < rows_; i++) 
             matrix_[i] = new double[other.cols_];
         
     for (int i = 0; i < other.rows_; i++) {
@@ -38,6 +39,9 @@ void S21Matrix::MulMatrix(const S21Matrix& other) {
     } else
         std::cout << "error calc\n";
     // return temp;
+    // *this = temp;
+
+    // TODO: remove when operator= is implemented
     cols_ = other.cols_; 
     for(int i = 0; i < rows_; i++)
             for(int j = 0; j < other.cols_; j++)
@@ -94,6 +98,25 @@ S21Matrix operator-(const S21Matrix& a, const S21Matrix& b) {
     return temp;
 }
 
+
+S21Matrix operator*(const S21Matrix &a, const S21Matrix &b) {
+    if (a.rows_ != b.cols_) {
+        throw std::out_of_range("The number of columns of the first matrix does not equal the number of rows of the second matrix");
+    }
+    S21Matrix temp(a.rows_, b.cols_);
+    if(a.rows_ == b.cols_) {
+        for(int i = 0; i < a.rows_; i++) {
+            for(int j = 0; j < b.cols_; j++) {
+                temp.matrix_[i][j] = 0;
+                for(int inner = 0; inner < a.cols_; inner++)
+                    temp.matrix_[i][j] += a.matrix_[i][inner] * b.matrix_[inner][j];
+            }
+        }
+    } else
+        std::cout << "error calc\n";
+    return temp;
+}
+
 void S21Matrix::SumMatrix(const S21Matrix& other) {
     bool a;
     a = EqMatrix(other);
@@ -119,7 +142,7 @@ void S21Matrix::SubMatrix(const S21Matrix& other) {
         }
 }
 
-bool S21Matrix::EqMatrix(const S21Matrix& other) {
+bool S21Matrix::EqMatrix(const S21Matrix& other) const {
     if (rows_ != other.rows_ || cols_ != other.cols_) 
         return false;
 
@@ -132,13 +155,20 @@ bool S21Matrix::EqMatrix(const S21Matrix& other) {
 }
 
 S21Matrix::S21Matrix(int rows, int columns): rows_(rows), cols_(columns) {
-    double *pointer = new double[rows_ * cols_ *sizeof(double)];
-    double **matrix_local = new double*[rows_ * sizeof(double*)];
+    // double *pointer = new double[rows_ * cols_ *sizeof(double)];
+    // double **matrix_local = new double*[rows_ * sizeof(double*)];
 
-        for(int i = 0; i < rows_; i++) {
-            *(matrix_local + i) = pointer + i*cols_;
-        }
-        matrix_ = matrix_local;
+    //     for(int i = 0; i < rows_; i++) {
+    //         *(matrix_local + i) = pointer + i*cols_;
+    //     }
+    //     matrix_ = matrix_local;
+
+    matrix_= new double* [rows_]; 
+    for(int i = 0; i < rows_; i++) 
+        matrix_[i] = new double[cols_];
+
+
+
 }
 
 void S21Matrix::Fill() {
@@ -156,10 +186,11 @@ void S21Matrix::FillC() {
 }
 
 S21Matrix::~S21Matrix() {             // Destructor
-        delete matrix_[0];
-        delete[] matrix_;
-        rows_ = 0;
-        cols_ = 0;
+    for(int i = 0; i < rows_; i++) 
+        delete[] matrix_[i];
+    delete[] matrix_;
+    rows_ = 0;
+    cols_ = 0;
 }
 
 

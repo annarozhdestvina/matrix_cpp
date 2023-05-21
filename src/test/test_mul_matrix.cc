@@ -69,8 +69,6 @@ TEST(test_mul_matrix, test3) {
     m1(2, 0) = -1;
     m1(2, 1) = 5;
     m1(2, 2) = -1;
-    std::cout << "m1\n";
-    m1.Print();
 
     S21Matrix m2(3, 3);
     m2(0, 0) = 1;
@@ -82,8 +80,6 @@ TEST(test_mul_matrix, test3) {
     m2(2, 0) = 5;
     m2(2, 1) = 6;
     m2(2, 2) = 2;
-    std::cout << "m2\n";
-    m2.Print();
 
     S21Matrix m3(3, 3);
     m3(0, 0) = 22;
@@ -95,8 +91,6 @@ TEST(test_mul_matrix, test3) {
     m3(2, 0) = 9;
     m3(2, 1) = -13;
     m3(2, 2) = 19;
-    std::cout << "m3\n";
-    m3.Print();
 
     m1.MulMatrix(m2);
     

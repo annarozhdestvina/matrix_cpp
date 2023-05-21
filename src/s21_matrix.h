@@ -27,7 +27,7 @@ public:
 
     void Print() const;
 
-    bool EqMatrix(const S21Matrix& other);
+    bool EqMatrix(const S21Matrix& other) const;
     int GetRow(); //метод получает значение числа строк
     int GetCol(); //метод получает значение числа столбцов
     double& operator()(int, int); //перегрузка скобок для матрицы
@@ -36,7 +36,7 @@ public:
     friend S21Matrix operator+(const S21Matrix &a, const S21Matrix &b);
     friend S21Matrix operator-(const S21Matrix &a, const S21Matrix &b);
 
-    // friend S21Matrix operator*(const S21Matrix &a, const S21Matrix &b);
+    friend S21Matrix operator*(const S21Matrix &a, const S21Matrix &b);
 
     void MulNumber(const double num);
     void MulMatrix(const S21Matrix& other);
