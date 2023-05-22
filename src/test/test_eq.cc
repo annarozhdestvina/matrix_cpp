@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "../s21_matrix.h"
 
-TEST(my_tests_eq, test1) {
+TEST(equal, test1) {
     S21Matrix m1(3, 4);
     m1.Fill();
 
@@ -11,7 +11,7 @@ TEST(my_tests_eq, test1) {
     EXPECT_TRUE(m1.EqMatrix(m2));
 }
 
-TEST(my_tests_eq, test2) {
+TEST(equal, test2) {
     S21Matrix m1(2, 5);
     m1.Fill();
 
@@ -20,7 +20,7 @@ TEST(my_tests_eq, test2) {
     EXPECT_TRUE(m1.EqMatrix(m2));
 }
 
-TEST(my_tests_eq, test3) {
+TEST(equal, test3) {
     S21Matrix m1(2, 5);
     m1.Fill();
 
@@ -30,7 +30,7 @@ TEST(my_tests_eq, test3) {
     EXPECT_FALSE(m1.EqMatrix(m2));
 }
 
-TEST(test_eq, test4) {
+TEST(equal, test4) {
     S21Matrix m1(2, 4);
     m1.Fill();
 
@@ -38,7 +38,7 @@ TEST(test_eq, test4) {
     EXPECT_TRUE(m1.EqMatrix(m2));
 }
 
-TEST(test_eq, test5) {
+TEST(equal, test5) {
     S21Matrix m1(2, 4);
     m1.Fill();
 
@@ -48,7 +48,7 @@ TEST(test_eq, test5) {
     EXPECT_EQ(m1.EqMatrix(m2), 0);
 }
 
-TEST(test_eq, test6) {
+TEST(equal, test6) {
     S21Matrix m1(6, 6);
     m1.Fill();
 
@@ -58,14 +58,14 @@ TEST(test_eq, test6) {
     EXPECT_FALSE(m2.EqMatrix(m1));
 }
 
-TEST(test_eq, test7) {
+TEST(equal, test7) {
     S21Matrix m1(6, 6);
     m1.Fill();
 
     EXPECT_TRUE(m1.EqMatrix(m1));    
 }
 
-TEST(test_eq, test8) {
+TEST(equal, test8) {
     S21Matrix m1(2, 4);
     m1.Fill();
 

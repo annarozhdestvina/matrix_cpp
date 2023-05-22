@@ -52,22 +52,17 @@ S21Matrix& S21Matrix::operator= (const S21Matrix &drob) {
     if (this == &drob)
         return *this;
 
-    for(int i = 0; i < rows_; i++) {
-        delete[] matrix_[i];
-        matrix_[i] = nullptr;
-    }
-    delete[] matrix_;
-    matrix_ = nullptr;
-    rows_ = 0;
-    cols_ = 0;
-    // Выполняем копирование значений
     // освободить память
+    S21Matrix::~S21Matrix();
+
     rows_ = drob.rows_;
     cols_ = drob.cols_;
 
     matrix_= new double* [rows_]; 
     for(int i = 0; i < rows_; i++) 
         matrix_[i] = new double[cols_];
+
+    // Выполняем копирование значений
 
     for(int i = 0; i < rows_; i++)
             for(int j = 0; j < drob.cols_; j++)
@@ -201,9 +196,74 @@ void S21Matrix::FillC() {
     matrix_[2][2] = 25;
 }
 
-// S21Matrix S21Matrix::Transpose() {
-    // int a;
-// }
+S21Matrix S21Matrix::Transpose() {
+    S21Matrix temp(cols_, rows_);
+
+    for(int i = 0; i < rows_; i++)
+        for(int j = 0; j < cols_; j++)
+            temp.matrix_[j][i] = matrix_[i][j];
+
+    *this = temp;
+
+    return *this;
+}
+
+S21Matrix S21Matrix::do_lit(int row_del, int col_del) {
+    if(rows_ != cols_ || rows_ == 1){
+        throw std::out_of_range("exectution error");
+    }
+    if(row_del >= rows_ || col_del >= cols_) {
+        throw std::out_of_range("input error");
+    }
+    
+    int size = rows_ - 1;
+    S21Matrix temp(size, size);
+    int i_l = 0;
+    for (int i_b = 0; i_b < rows_; i_b++) {
+        if(i_b != row_del) {
+            int j_l = 0;
+            for (int j_b = 0; j_b < cols_; j_b++) {
+                if(j_b != col_del) {
+                    temp.matrix_[i_l][j_l] = matrix_[i_b][j_b];
+                    ++j_l;
+                }
+            }
+            ++i_l;
+        }
+    }
+    *this = temp;
+    return temp;
+}
+
+double S21Matrix::Determinant() {
+    if (rows_ != cols_) {
+        throw std::out_of_range("the matrix is not square");
+    }
+    S21Matrix temp(rows_, cols_);
+    for(int i = 0; i < rows_; i++)
+        for(int j = 0; j < cols_; j++)
+            temp.matrix_[j][i] = matrix_[i][j];
+
+    double determinant = 0.0;
+    int k = 1;
+    if(rows_ == 1) {
+        return matrix_[0][0];
+    } else if (rows_ == 2) {
+        return determinant = (matrix_[0][0] * matrix_[1][1] - matrix_[1][0] * matrix_[0][1]);
+    } else if(rows_ > 2) {
+        for(int i = 0; i < cols_; i++) {
+            std::cout << "matrix before lit\n";
+            // S21Matrix::Print();
+            do_lit(i, 0);
+            std::cout << "matrix before lit\n";
+            // S21Matrix::Print();
+            std::cout << "det in i = " << i << ' ' << determinant << '\n';
+            determinant = determinant + temp.matrix_[i][0] * k * S21Matrix::Determinant();
+            k = -k;
+        }
+    }
+    return determinant;
+}
 
 S21Matrix::~S21Matrix() {             // Destructor
     for(int i = 0; i < rows_; i++) 

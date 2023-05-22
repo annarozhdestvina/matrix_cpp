@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "../s21_matrix.h"
 
-TEST(test_mul_matrix, test1) {
+TEST(mul_matrix, test1) {
     S21Matrix m1(3, 3);
     m1(0, 0) = 0;
     m1(0, 1) = 2;
@@ -40,7 +40,7 @@ TEST(test_mul_matrix, test1) {
     EXPECT_TRUE(m1.EqMatrix(m3));
 }
 
-TEST(tes_mul_matrix, test2) {
+TEST(mul_matrix, test2) {
     S21Matrix m1(2, 3);
     m1.Fill();
 
@@ -58,7 +58,7 @@ TEST(tes_mul_matrix, test2) {
     EXPECT_TRUE(m1.EqMatrix(m3));
 }
 
-TEST(test_mul_matrix, test3) {
+TEST(mul_matrix, test3) {
     S21Matrix m1(3, 3);
     m1(0, 0) = 1;
     m1(0, 1) = 2;

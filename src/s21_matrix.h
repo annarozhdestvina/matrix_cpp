@@ -5,7 +5,8 @@ private:
     double **matrix_;         // Pointer to the memory where the matrix is allocated
     static int s_id_;         // статическая переменная 
 public:
-    S21Matrix() : rows_{0}, cols_{0}, matrix_{nullptr} {}          // Default constructor
+    S21Matrix() : rows_{0}, cols_{0}, matrix_{nullptr} {}; // Default constructor
+
     ~S21Matrix();               // Destructor
 
     S21Matrix(const S21Matrix& other);
@@ -17,7 +18,9 @@ public:
     // Other methods..
     S21Matrix(int rows, int columns);
 
-    // S21Matrix Transpose();
+    S21Matrix Transpose();
+    double Determinant();
+    S21Matrix do_lit(int row_del, int col_del);
 
     void Fill();
     void FillC();

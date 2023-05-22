@@ -2,7 +2,7 @@
 #include "../s21_matrix.h"
 #include <stdexcept>
 
-TEST(test_sum, test1){
+TEST(operator_sum, test1){
     S21Matrix m1(2, 2);
     m1.Fill();
 
@@ -20,7 +20,7 @@ TEST(test_sum, test1){
     EXPECT_TRUE(m3.EqMatrix(m4));
 }
 
-TEST(test_sum, test2) {
+TEST(operator_sum, test2) {
     S21Matrix m1(4, 4);
     m1.Fill();
 
@@ -50,7 +50,7 @@ TEST(test_sum, test2) {
     EXPECT_TRUE(m3.EqMatrix(m4));
 }
 
-TEST(test_sum, test3) {
+TEST(operator_sum, test3) {
     S21Matrix m1(4, 4);
     m1.Fill();
 
@@ -80,7 +80,7 @@ TEST(test_sum, test3) {
     EXPECT_TRUE(m3.EqMatrix(m4));
 }
 
-TEST(test_sum, different_matrix_dimensions)
+TEST(operator_sum, different_matrix_dimensions)
 {
     S21Matrix m1(2, 3);
     S21Matrix m2(3, 3);
@@ -96,7 +96,7 @@ TEST(test_sum, different_matrix_dimensions)
     }
 }
 
-TEST(test_sub, test1){
+TEST(operator_sub, test1){
     S21Matrix m1(2, 2);
     m1.Fill();
 
@@ -114,7 +114,7 @@ TEST(test_sub, test1){
     EXPECT_TRUE(m3.EqMatrix(m4));
 }
 
-TEST(test_sub, test2) {
+TEST(operator_sub, test2) {
     S21Matrix m1(4, 4);
     m1.Fill();
 
@@ -144,7 +144,7 @@ TEST(test_sub, test2) {
     EXPECT_TRUE(m3.EqMatrix(m4));
 }
 
-TEST(test_sub, test3) {
+TEST(operator_sub, test3) {
     S21Matrix m1(4, 4);
     m1.Fill();
 
@@ -174,7 +174,7 @@ TEST(test_sub, test3) {
     EXPECT_TRUE(m3.EqMatrix(m4));
 }
 
-TEST(test_sub, different_matrix_dimensions)
+TEST(operator_sub, different_matrix_dimensions)
 {
     S21Matrix m1(2, 3);
     S21Matrix m2(3, 3);
@@ -190,7 +190,7 @@ TEST(test_sub, different_matrix_dimensions)
     }
 }
 
-TEST(test_mul_operator, test1) {
+TEST(operator_mul_operator, test1) {
     S21Matrix m1(2, 3);
     m1.Fill();
 
@@ -209,7 +209,7 @@ TEST(test_mul_operator, test1) {
 
 }
 
-TEST(test_mul_operator, test2) {
+TEST(operator_mul_operator, test2) {
     S21Matrix m1(5, 3);
     m1.Fill();
 
@@ -242,7 +242,7 @@ TEST(test_mul_operator, test2) {
     }
 }
 
-TEST(test_mul_operator, test3) {
+TEST(operator_mul_operator, test3) {
     S21Matrix m1(3, 3);
     m1(0, 0) = 1;
     m1(0, 1) = 2;
@@ -277,8 +277,6 @@ TEST(test_mul_operator, test3) {
     m3(2, 0) = 9;
     m3(2, 1) = -13;
     m3(2, 2) = 19;
-    
-
     
     EXPECT_TRUE(m4.EqMatrix(m3));
 }
