@@ -17,6 +17,7 @@ public:
     // Other methods..
     S21Matrix(int rows, int columns);
 
+    // S21Matrix Transpose();
 
     void Fill();
     void FillC();
@@ -32,6 +33,9 @@ public:
     int GetCol(); //метод получает значение числа столбцов
     double& operator()(int, int); //перегрузка скобок для матрицы
     double operator()(int, int) const; //перегрузка скобок для матрицы
+
+    S21Matrix& operator=(const S21Matrix &str);
+    bool friend operator==(const S21Matrix &a, const S21Matrix &b);
     
     friend S21Matrix operator+(const S21Matrix &a, const S21Matrix &b);
     friend S21Matrix operator-(const S21Matrix &a, const S21Matrix &b);

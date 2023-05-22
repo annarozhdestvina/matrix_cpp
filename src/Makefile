@@ -26,6 +26,7 @@ clean:
 	rm -rf *.o
 	rm -rf *.out
 	rm -rf test/*.out test/*.o
+	rm -rf valgrind_report/*.txt
 
 leaks: clean test
 	leaks -atExit -- ./test/test_main.out

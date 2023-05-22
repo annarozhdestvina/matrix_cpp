@@ -38,14 +38,43 @@ void S21Matrix::MulMatrix(const S21Matrix& other) {
         }
     } else
         std::cout << "error calc\n";
-    // return temp;
-    // *this = temp;
+    *this = temp;
+}
 
-    // TODO: remove when operator= is implemented
-    cols_ = other.cols_; 
+bool operator==(const S21Matrix &a, const S21Matrix &b) {
+    // if (a.EqMatrix(b))
+    return (a.EqMatrix(b)); 
+
+}
+
+S21Matrix& S21Matrix::operator= (const S21Matrix &drob) {
+    // Проверка на самоприсваивание
+    if (this == &drob)
+        return *this;
+
+    for(int i = 0; i < rows_; i++) {
+        delete[] matrix_[i];
+        matrix_[i] = nullptr;
+    }
+    delete[] matrix_;
+    matrix_ = nullptr;
+    rows_ = 0;
+    cols_ = 0;
+    // Выполняем копирование значений
+    // освободить память
+    rows_ = drob.rows_;
+    cols_ = drob.cols_;
+
+    matrix_= new double* [rows_]; 
+    for(int i = 0; i < rows_; i++) 
+        matrix_[i] = new double[cols_];
+
     for(int i = 0; i < rows_; i++)
-            for(int j = 0; j < other.cols_; j++)
-                matrix_[i][j] = temp.matrix_[i][j];
+            for(int j = 0; j < drob.cols_; j++)
+                matrix_[i][j] = drob.matrix_[i][j];
+ 
+    // Возвращаем текущий объект
+    return *this;
 }
 
 void S21Matrix::MulNumber(const double num) {
@@ -56,13 +85,11 @@ for(int i = 0; i < rows_; i++) {
     }
 }
 
-int S21Matrix::GetRow() //функция получает значение числа строк
-{
+int S21Matrix::GetRow() { //функция получает значение числа строк
     return (rows_);
 }
 
-int S21Matrix::GetCol() //функция получает значение числа столбцов
-{
+int S21Matrix::GetCol() { //функция получает значение числа столбцов
     return (cols_);
 }
 
@@ -155,20 +182,9 @@ bool S21Matrix::EqMatrix(const S21Matrix& other) const {
 }
 
 S21Matrix::S21Matrix(int rows, int columns): rows_(rows), cols_(columns) {
-    // double *pointer = new double[rows_ * cols_ *sizeof(double)];
-    // double **matrix_local = new double*[rows_ * sizeof(double*)];
-
-    //     for(int i = 0; i < rows_; i++) {
-    //         *(matrix_local + i) = pointer + i*cols_;
-    //     }
-    //     matrix_ = matrix_local;
-
     matrix_= new double* [rows_]; 
     for(int i = 0; i < rows_; i++) 
         matrix_[i] = new double[cols_];
-
-
-
 }
 
 void S21Matrix::Fill() {
@@ -185,6 +201,10 @@ void S21Matrix::FillC() {
     matrix_[2][2] = 25;
 }
 
+// S21Matrix S21Matrix::Transpose() {
+    // int a;
+// }
+
 S21Matrix::~S21Matrix() {             // Destructor
     for(int i = 0; i < rows_; i++) 
         delete[] matrix_[i];
@@ -193,18 +213,3 @@ S21Matrix::~S21Matrix() {             // Destructor
     cols_ = 0;
 }
 
-
-/*int main() {
-    S21Matrix m1(2, 4);
-    m1.Fill();
-    m1.Print();
-    m1(1, 1) = 6.4;
-    m1.Print();
-
-    S21Matrix m2(m1);
-    m1(1, 1) = 33.4;
-    std::cout << "m1 print\n";
-    m1.Print();
-    std::cout << "m2 print\n";
-    m2.Print();
-}*/
