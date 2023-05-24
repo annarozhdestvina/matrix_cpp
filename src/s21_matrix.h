@@ -21,7 +21,7 @@ public:
     S21Matrix Transpose();
     double Determinant() const;
     S21Matrix CalcComplements();
-    double Determinant2();
+    S21Matrix InverseMatrix();
     S21Matrix do_lit(int row_del, int col_del) const;
 
     void Fill();

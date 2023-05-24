@@ -58,7 +58,7 @@ TEST(determinant, test5) {
     m1.Fill();
     double a = m1.Determinant();
 
-    std::cout << "det a: " << a;
+    EXPECT_DOUBLE_EQ(0.0, a);
 }
 
 TEST(determinant, test6) {
