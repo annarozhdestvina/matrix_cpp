@@ -235,43 +235,51 @@ S21Matrix S21Matrix::do_lit(int row_del, int col_del) const {
     return temp;
 }
 
-// double S21Matrix::Determinant() {
-//     if (rows_ != cols_) {
-//         throw std::out_of_range("the matrix is not square");
-//     }
-//     S21Matrix temp(rows_, cols_);
-//     for(int i = 0; i < rows_; i++)
-//         for(int j = 0; j < cols_; j++)
-//             temp.matrix_[j][i] = matrix_[i][j];
+double S21Matrix::Determinant2() {
+    if (rows_ != cols_) {
+        throw std::out_of_range("the matrix is not square");
+    }
+    // S21Matrix temp(rows_, cols_);
+    // for(int i = 0; i < rows_; i++)
+    //     for(int j = 0; j < cols_; j++)
+    //         temp.matrix_[j][i] = matrix_[i][j];
 
-//     double determinant = 0.0;
-//     int k = 1;
-//     if(rows_ == 1) {
-//         return matrix_[0][0];
-//     } else if (rows_ == 2) {
-//         return determinant = (matrix_[0][0] * matrix_[1][1] - matrix_[1][0] * matrix_[0][1]);
-//     } else if(rows_ > 2) {
-//         for(int i = 0; i < cols_; i++) {
-//             std::cout << "matrix before lit\n";
-//             temp.Print();
-//             if(temp.rows_ > 1) {
-//             temp.do_lit(i, 0);
-//             std::cout << "matrix after lit\n";
-//             temp.Print();
-//             std::cout << "det in i = " << i << "  det = " << determinant << '\n';
-//             determinant = determinant + matrix_[i][0] * k * temp.Determinant();
-//             std::cout << "matrix["<<i<<"][0] = " << matrix_[i][0] << '\n';
-//             k = -k;
-//             }
-//         }
-//     }
-//     return determinant;
-// }
+    double determinant = 0.0;
+    int k = 1;
+    if(rows_ == 1) {
+        return matrix_[0][0];
+    } else if (rows_ == 2) {
+        return determinant = (matrix_[0][0] * matrix_[1][1] - matrix_[1][0] * matrix_[0][1]);
+    } else if(rows_ > 2) {
+        for(int i = 0; i < cols_; i++) {
+            S21Matrix temp(rows_, cols_);
+    for(int i = 0; i < rows_; i++)
+        for(int j = 0; j < cols_; j++)
+            temp.matrix_[j][i] = matrix_[i][j];
+            std::cout << "matrix before lit\n";
+            temp.Print();
+            if(temp.rows_ > 1) {
+            temp.do_lit(i, 0);
+            std::cout << "matrix after lit\n";
+            temp.Print();
+            std::cout << "det in i = " << i << "  det = " << determinant << '\n';
+            determinant = determinant + matrix_[i][0] * k * temp.Determinant();
+            std::cout << "matrix["<<i<<"][0] = " << matrix_[i][0] << '\n';
+            k = -k;
+            }
+        }
+    }
+    return determinant;
+}
 
 double S21Matrix::Determinant() const  {
     if (rows_ != cols_)
         throw std::out_of_range("the matrix is not square");
     
+    if (rows_ == 0)
+        throw std::out_of_range("rows is 0");
+    
+
     assert(rows_ > 0 && "rows is 0 or negative");
 
     if(rows_ == 1)
@@ -287,9 +295,38 @@ double S21Matrix::Determinant() const  {
         k = -k;
     }
 
-
     return det;
+}
 
+int minus_one_pow(int pow) { return (((pow + 1) % 2) * 2.0 - 1.0); }
+
+
+S21Matrix S21Matrix::CalcComplements() {
+    if (rows_ != cols_)
+        throw std::out_of_range("the matrix is not square");
+
+        S21Matrix temp(rows_, cols_);
+    for(int i = 0; i < rows_; i++)
+        for(int j = 0; j < cols_; j++)
+            temp.matrix_[j][i] = matrix_[i][j];
+    
+    for (int i = 0; i < rows_; i++) {
+        for (int j = 0; j < rows_; j++) {
+            const S21Matrix little = do_lit(i, j);
+            //little.do_lit(i, j);
+            std::cout << "temp after do lit\n";
+            little.Print();
+            double det = 0.0;
+            det = little.Determinant();
+            std::cout << "det in i j " << i << ' ' << j <<'\n';
+            std::cout << "det after do lit " << det << '\n';
+            temp.matrix_[i][j] =  det * minus_one_pow(i + j);  
+            // temp.matrix_[i][j] = matrix_[i][j] + det * minus_one_pow(i + j);  
+
+        }
+    }
+    *this = temp;
+    return temp;
 }
 
 S21Matrix::~S21Matrix() {             // Destructor

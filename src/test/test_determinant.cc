@@ -38,16 +38,19 @@ TEST(determinant, test32) {
 }
 
 TEST(determinant, test4) {
-    S21Matrix m1(4, 4);
+    S21Matrix m1(0, 0);
     m1.Fill();
-    std::cout << "m1 before do_lit\n";
-    m1.Print();
-    // double a = m1.Determinant();
-    // std::cout << "det m1: " << a;
-    S21Matrix lit;
-    m1.do_lit(1, 1);
-    std::cout << "m1 after do_lit\n";
-    m1.Print();
+
+    try {
+        m1.Determinant();
+        FAIL() << "Expected std::rows is 0";
+    }
+    catch(std::out_of_range const & err) {
+        EXPECT_EQ(err.what(),std::string("rows is 0"));
+    }
+    catch(...) {
+        FAIL() << "Expected std::rows is 0";
+    }
 }
 
 TEST(determinant, test5) {
