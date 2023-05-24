@@ -19,8 +19,8 @@ public:
     S21Matrix(int rows, int columns);
 
     S21Matrix Transpose();
-    double Determinant();
-    S21Matrix do_lit(int row_del, int col_del);
+    double Determinant() const;
+    S21Matrix do_lit(int row_del, int col_del) const;
 
     void Fill();
     void FillC();
@@ -42,8 +42,27 @@ public:
     
     friend S21Matrix operator+(const S21Matrix &a, const S21Matrix &b);
     friend S21Matrix operator-(const S21Matrix &a, const S21Matrix &b);
-
     friend S21Matrix operator*(const S21Matrix &a, const S21Matrix &b);
+
+    // S21Matrix& operator+=(const S21Matrix &other);
+    S21Matrix& operator+=(const S21Matrix &other)
+	{
+		// Увеличиваем сумму всех полученных значений новым значением
+		// m_total += num;
+		// И добавляем единицу к общему количеству полученных чисел
+		// ++m_numbers;
+        // S21Matrix::SumMatrix(other);
+        rows_ = other.rows_;
+        cols_ = other.cols_;
+
+        /*for(int i = 0; i < rows_; i++) 
+                for(int j = 0; j < cols_; j++) 
+                    matrix_[i][j] += other.matrix_[i][j];*/
+        S21Matrix::SumMatrix(other);
+ 
+		// Возвращаем текущий объект, чтобы иметь возможность выполнять цепочку операций с +=
+		return *this;
+	}
 
     void MulNumber(const double num);
     void MulMatrix(const S21Matrix& other);
