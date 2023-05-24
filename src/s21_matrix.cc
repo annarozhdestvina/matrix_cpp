@@ -203,9 +203,9 @@ S21Matrix S21Matrix::Transpose() {
         for(int j = 0; j < cols_; j++)
             temp.matrix_[j][i] = matrix_[i][j];
 
-    *this = temp;
-
-    return *this;
+    // *this = temp;
+    // return *this;
+    return temp;
 }
 
 S21Matrix S21Matrix::do_lit(int row_del, int col_del) const {

@@ -4,8 +4,9 @@
 TEST(transpose, test1) {
     S21Matrix m1(3, 4);
     m1.Fill();
+    m1.Print();
 
-    m1.Transpose();
+    S21Matrix temp = m1.Transpose();
 
     S21Matrix m2(4, 3);
     m2(0, 0) = 1.0;
@@ -21,7 +22,7 @@ TEST(transpose, test1) {
     m2(3, 1) = 8.0;
     m2(3, 2) = 12.0;
 
-    EXPECT_TRUE(m1.EqMatrix(m2));
+    EXPECT_TRUE(temp.EqMatrix(m2));
 }
 
 TEST(transpose, test2) {
