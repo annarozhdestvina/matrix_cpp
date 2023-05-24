@@ -278,6 +278,8 @@ double S21Matrix::Determinant() const  {
     
     if (rows_ == 0)
         throw std::out_of_range("rows is 0");
+    if (cols_ == 0)
+        throw std::out_of_range("columns is 0");
     
 
     assert(rows_ > 0 && "rows is 0 or negative");
@@ -304,6 +306,14 @@ int minus_one_pow(int pow) { return (((pow + 1) % 2) * 2.0 - 1.0); }
 S21Matrix S21Matrix::CalcComplements() {
     if (rows_ != cols_)
         throw std::out_of_range("the matrix is not square");
+    
+    if (rows_ == 0)
+        throw std::out_of_range("rows is 0");
+    if (cols_ == 0)
+        throw std::out_of_range("columns is 0");
+    if (cols_ == 1 && rows_ == 1)
+        throw std::out_of_range("inappropriate matrix rows and cols should be > 1");
+    
 
         S21Matrix temp(rows_, cols_);
     for(int i = 0; i < rows_; i++)
@@ -313,16 +323,9 @@ S21Matrix S21Matrix::CalcComplements() {
     for (int i = 0; i < rows_; i++) {
         for (int j = 0; j < rows_; j++) {
             const S21Matrix little = do_lit(i, j);
-            //little.do_lit(i, j);
-            std::cout << "temp after do lit\n";
-            little.Print();
             double det = 0.0;
             det = little.Determinant();
-            std::cout << "det in i j " << i << ' ' << j <<'\n';
-            std::cout << "det after do lit " << det << '\n';
-            temp.matrix_[i][j] =  det * minus_one_pow(i + j);  
-            // temp.matrix_[i][j] = matrix_[i][j] + det * minus_one_pow(i + j);  
-
+            temp.matrix_[i][j] =  det * minus_one_pow(i + j);
         }
     }
     *this = temp;
