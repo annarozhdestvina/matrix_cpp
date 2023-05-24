@@ -6,7 +6,7 @@ TEST(inverse_matrix, test1) {
     m1.Fill();
 
     try {
-        m1.InverseMatrix();
+        S21Matrix temp = m1.InverseMatrix();
         FAIL() << "Expected std::matrix determinant is 0";
     }
     catch(std::out_of_range const & err) {
@@ -29,7 +29,7 @@ TEST(inverse_matrix, test2) {
     m1(2, 1) = -2;
     m1(2, 2) = -3;
 
-    m1.InverseMatrix();
+    S21Matrix temp = m1.InverseMatrix();
 
     S21Matrix m2(3, 3);
     m2(0, 0) = 1;
@@ -42,7 +42,7 @@ TEST(inverse_matrix, test2) {
     m2(2, 1) = -29;
     m2(2, 2) = 24;
 
-    EXPECT_TRUE(m1.EqMatrix(m2));
+    EXPECT_TRUE(temp.EqMatrix(m2));
 }
 
 TEST(inverse_matrix, test3) {
@@ -50,7 +50,7 @@ TEST(inverse_matrix, test3) {
     m1.Fill();
 
     try {
-        m1.InverseMatrix();
+        S21Matrix temp = m1.InverseMatrix();
         FAIL() << "Expected std::the matrix is not square";
     }
     catch(std::out_of_range const & err) {
@@ -66,7 +66,7 @@ TEST(inverse_matrix, test4) {
     m1.Fill();
 
     try {
-        m1.InverseMatrix();
+        S21Matrix temp = m1.InverseMatrix();
         FAIL() << "Expected std::rows is 0";
     }
     catch(std::out_of_range const & err) {
@@ -82,7 +82,7 @@ TEST(inverse_matrix, test5) {
     m1.Fill();
 
     try {
-        m1.InverseMatrix();
+        S21Matrix temp = m1.InverseMatrix();
         FAIL() << "Expected std::inappropriate matrix rows and cols should be > 1";
     }
     catch(std::out_of_range const & err) {

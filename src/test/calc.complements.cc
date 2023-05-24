@@ -5,7 +5,7 @@ TEST(calc_complements, test1) {
     S21Matrix m1(3, 3);
     m1.Fill();
 
-    m1.CalcComplements();
+    S21Matrix temp = m1.CalcComplements();
     S21Matrix m2(3, 3);
     m2(0, 0) = -3;
     m2(0, 1) = 6;
@@ -17,13 +17,13 @@ TEST(calc_complements, test1) {
     m2(2, 1) = 6;
     m2(2, 2) = -3;
 
-    EXPECT_TRUE(m1.EqMatrix(m2));
+    EXPECT_TRUE(temp.EqMatrix(m2));
 }
 
 TEST(calc_complements, test2) {
     S21Matrix m1(2, 2);
     m1.Fill();
-    m1.CalcComplements();
+    S21Matrix temp = m1.CalcComplements();
 
     S21Matrix m2(2, 2);
     m2(0, 0) = 4;
@@ -31,7 +31,7 @@ TEST(calc_complements, test2) {
     m2(1, 0) = -2;
     m2(1, 1) = 1;
 
-    EXPECT_TRUE(m1.EqMatrix(m2));
+    EXPECT_TRUE(temp.EqMatrix(m2));
 }
 
 TEST(calc_complements, test3) {
@@ -46,7 +46,7 @@ TEST(calc_complements, test3) {
     m1(2, 1) = 2;
     m1(2, 2) = 1;
 
-    m1.CalcComplements();
+    S21Matrix temp = m1.CalcComplements();
     S21Matrix m2(3, 3);
     m2(0, 0) = 0;
     m2(0, 1) = 10;
@@ -58,7 +58,7 @@ TEST(calc_complements, test3) {
     m2(2, 1) = -2;
     m2(2, 2) = 4;
 
-    EXPECT_TRUE(m1.EqMatrix(m2));
+    EXPECT_TRUE(temp.EqMatrix(m2));
 }
 
 TEST(calc_complements, test4) {

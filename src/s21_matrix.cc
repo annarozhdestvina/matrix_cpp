@@ -203,8 +203,6 @@ S21Matrix S21Matrix::Transpose() {
         for(int j = 0; j < cols_; j++)
             temp.matrix_[j][i] = matrix_[i][j];
 
-    // *this = temp;
-    // return *this;
     return temp;
 }
 
@@ -285,7 +283,6 @@ S21Matrix S21Matrix::CalcComplements() {
             temp.matrix_[i][j] =  det * minus_one_pow(i + j);
         }
     }
-    *this = temp;
     return temp;
 }
 
@@ -301,17 +298,17 @@ S21Matrix S21Matrix::InverseMatrix() {
     if (det == 0)
         throw std::out_of_range("matrix determinant is 0");
     
-    temp.Transpose();
+    S21Matrix first = temp.Transpose();
 
-    temp.CalcComplements();
+    S21Matrix second = first.CalcComplements();
    
     for(int i = 0; i < rows_; i++) {
         for(int j = 0; j < cols_; j++) {
-            matrix_[i][j] = temp.matrix_[i][j] / det;
+            temp.matrix_[i][j] = second.matrix_[i][j] / det;
         }
     }
    
-    return *this;
+    return temp;
 }
 
 S21Matrix::~S21Matrix() {             // Destructor
