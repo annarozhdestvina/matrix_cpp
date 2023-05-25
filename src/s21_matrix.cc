@@ -86,13 +86,30 @@ int S21Matrix::GetCol() { //функция получает значение ч�
     return (cols_);
 }
 
-double S21Matrix::operator()(int row, int col) const//перегрузка круглых скобок для матрицы.
+double S21Matrix::operator()(int row_index, int col_index) const//перегрузка круглых скобок для матрицы.
 {                             // Если m - матрица, то m(i,j) будет
-    return (matrix_[row][col]);  //означать i,j-тый элемент матрицы
+           // 3           2
+// индекс от 0 включительно до размера не влючительно
+    if (row_index >= rows_ || col_index >= cols_) {
+            throw std::out_of_range("Different matrix dimensions");
+        }
+
+    if (row_index < 0 || col_index < 0) {
+            throw std::out_of_range("Different matrix dimensions");
+        }
+
+    return (matrix_[row_index][col_index]);  //означать i,j-тый элемент матрицы
 }
 
 double& S21Matrix::operator()(int row, int col)//перегрузка круглых скобок для матрицы.
 {                             // Если m - матрица, то m(i,j) будет
+    if (row >= rows_ || col >= cols_) {
+            throw std::out_of_range("Different matrix dimensions");
+        }
+
+    if (row < 0 || col < 0) {
+            throw std::out_of_range("Different matrix dimensions");
+        }
     return (matrix_[row][col]);  //означать i,j-тый элемент матрицы
 }
 
