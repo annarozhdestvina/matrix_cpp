@@ -1,5 +1,6 @@
 #include <iostream>
 #include "s21_matrix.h"
+#include <cassert>
 #include <cmath>
 
 double s21_fabs(double a) {
@@ -233,7 +234,8 @@ bool S21Matrix::EqMatrix(const S21Matrix& other) const {
 S21Matrix::S21Matrix(int rows, int columns): rows_(rows), cols_(columns) {
     matrix_= new double* [rows_]; 
     for(int i = 0; i < rows_; i++) 
-        matrix_[i] = new double[cols_];
+        matrix_[i] = new double[cols_] {}; //initialize all matrix[i][j] with 0.0
+
 }
 
 void S21Matrix::Fill() {
@@ -322,14 +324,13 @@ S21Matrix S21Matrix::CalcComplements() {
         throw std::out_of_range("columns is 0");
     if (cols_ == 1 && rows_ == 1)
         throw std::out_of_range("inappropriate matrix rows and cols should be > 1");
-    
 
-        S21Matrix temp(rows_, cols_);
-        for(int i = 0; i < rows_; i++)
-            for(int j = 0; j < cols_; j++)
-                temp.matrix_[i][j] = matrix_[i][j];
-    
-    for (int i = 0; i < rows_; i++) {
+    S21Matrix temp(rows_, cols_);
+    for(int i = 0; i < rows_; i++)
+        for(int j = 0; j < cols_; j++)
+            temp.matrix_[i][j] = matrix_[i][j];
+
+    for(int i = 0; i < rows_; i++) {
         for (int j = 0; j < rows_; j++) {
             const S21Matrix little = do_lit(i, j);
             double det = 0.0;
