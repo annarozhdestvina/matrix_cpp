@@ -1,9 +1,9 @@
 CC=g++
 CFLAGS=-Wall -Wextra -Werror -std=c++17 #-fsanitize=address
-#CFLAGS=-Wall -Wextra -std=c++17
+CFLAGS2=-Wall -Wextra -std=c++17
 #CFLAGS=-std=c++17 -fsanitize=address -fsanitize=undefined
 GTestFlags=-lgtest -lgtest_main #-fsanitize=address -fsanitize=undefined
-OPEN = open
+OPEN=open
 REPORT_DIR = report
 
 TEST_SOURCES=$(wildcard test/*.cc)
@@ -12,7 +12,7 @@ VALGRIND_REPORT_DIRECTORY_FOR_DOCKER_CONTAINER=valgrind_report
 TEST_BINARIES=$(patsubst %.cc,%.o,$(TEST_SOURCES))
 
 %.o: %.cc
-		$(CC) -c $(CFLAGS) $< -o $@
+		$(CC) -c $(CFLAGS2) $< -o $@
 
 
 test: test/test_main.out
@@ -30,6 +30,9 @@ clean:
 	rm -rf test/*.out test/*.o
 	rm -rf valgrind_report/*.txt
 	rm -rf test/*.gcno
+	rm -rf *.gcda
+	rm -rf report/*
+	rm -rf *.gcno
 
 leaks: clean test
 	leaks -atExit -- ./test/test_main.out
@@ -49,7 +52,7 @@ valgrind_full: test/test_main.out
 
 gcov_report: test $(REPORT_DIR)
 	gcovr -r . --html --html-details -o $(REPORT_DIR)/report.html
-	$(OPEN) $(REPORT_DIR)/report.html
+	$(OPEN) -a 'Google Chrome' $(REPORT_DIR)/report.html
 
 # Создание временной папки для отчетов
 $(REPORT_DIR):

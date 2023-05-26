@@ -74,3 +74,21 @@ TEST(void_sum_matrix, test3) {
     EXPECT_TRUE(m2.EqMatrix(m3));
 }
 
+TEST(void_sub_operator, test4) {
+    S21Matrix m1(2, 3);
+    m1.Fill();
+
+    S21Matrix m2(5, 5);
+
+    try {
+        m2.SubMatrix(m1);
+        FAIL() << "Expected std::different matrix dimensions";
+    }
+    catch(std::out_of_range const & err) {
+        EXPECT_EQ(err.what(),std::string("Different matrix dimensions"));
+    }
+    catch(...) {
+        FAIL() << "Expected std::different matrix dimensions";
+    }
+}
+

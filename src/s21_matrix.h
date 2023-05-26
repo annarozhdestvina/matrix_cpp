@@ -25,7 +25,6 @@ public:
     S21Matrix do_lit(int row_del, int col_del) const;
 
     void Fill();
-    void FillC();
 
     double getMatrix() const {
         return **matrix_;

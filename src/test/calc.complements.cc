@@ -67,13 +67,13 @@ TEST(calc_complements, test4) {
 
     try {
         m1.CalcComplements();
-        FAIL() << "Expected std::the matrix is not square";
+        FAIL() << "Expected std::rows is 0";
     }
     catch(std::out_of_range const & err) {
-        EXPECT_EQ(err.what(),std::string("the matrix is not square"));
+        EXPECT_EQ(err.what(),std::string("rows is 0"));
     }
     catch(...) {
-        FAIL() << "Expected std::the matrix is not square";
+        FAIL() << "Expected std::rows is 0";
     }
 }
 
@@ -106,5 +106,37 @@ TEST(calc_complements, test6) {
     }
     catch(...) {
         FAIL() << "Expected std::inappropriate matrix rows and cols should be > 1";
+    }
+}
+
+TEST(calc_complements, test7) {
+    S21Matrix m1(3, 0);
+    m1.Fill();
+
+    try {
+        m1.CalcComplements();
+        FAIL() << "Expected std::columns is 0";
+    }
+    catch(std::out_of_range const & err) {
+        EXPECT_EQ(err.what(),std::string("columns is 0"));
+    }
+    catch(...) {
+        FAIL() << "Expected std::columns is 0";
+    }
+}
+
+TEST(calc_complements, test8) {
+    S21Matrix m1(3, 7);
+    m1.Fill();
+
+    try {
+        m1.CalcComplements();
+        FAIL() << "Expected std::the matrix is not square";
+    }
+    catch(std::out_of_range const & err) {
+        EXPECT_EQ(err.what(),std::string("the matrix is not square"));
+    }
+    catch(...) {
+        FAIL() << "Expected std::the matrix is not square";
     }
 }

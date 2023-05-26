@@ -117,3 +117,22 @@ TEST(mul_matrix, test4) {
 
     EXPECT_TRUE(m1.EqMatrix(m3));
 }
+
+TEST(mul_matrix, test5) {
+    S21Matrix m1(4, 3);
+    m1.Fill();
+
+    S21Matrix m2(7, 7);
+    m2.Fill();
+
+    try {
+        m1.MulMatrix(m2);
+        FAIL() << "Expected std::the number of columns of the first matrix is not equal to the number of rows of the second matrix";
+    }
+    catch(std::out_of_range const & err) {
+        EXPECT_EQ(err.what(),std::string("the number of columns of the first matrix is not equal to the number of rows of the second matrix"));
+    }
+    catch(...) {
+        FAIL() << "Expected std::the number of columns of the first matrix is not equal to the number of rows of the second matrix";
+    }
+}

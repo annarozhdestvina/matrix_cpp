@@ -84,3 +84,19 @@ TEST(determinant, test7) {
 
     EXPECT_DOUBLE_EQ(-66.0, a);
 }
+
+TEST(determinant, test8) {
+    S21Matrix m1(4, 0);
+    m1.Fill();
+
+    try {
+        m1.Determinant();
+        FAIL() << "Expected std::columns is 0";
+    }
+    catch(std::out_of_range const & err) {
+        EXPECT_EQ(err.what(),std::string("columns is 0"));
+    }
+    catch(...) {
+        FAIL() << "Expected std::columns is 0";
+    }
+}

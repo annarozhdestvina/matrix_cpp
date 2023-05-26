@@ -51,13 +51,13 @@ TEST(inverse_matrix, test3) {
 
     try {
         S21Matrix temp = m1.InverseMatrix();
-        FAIL() << "Expected std::the matrix is not square";
+        FAIL() << "Expected std::rows is 0";
     }
     catch(std::out_of_range const & err) {
-        EXPECT_EQ(err.what(),std::string("the matrix is not square"));
+        EXPECT_EQ(err.what(),std::string("rows is 0"));
     }
     catch(...) {
-        FAIL() << "Expected std::the matrix is not square";
+        FAIL() << "Expected std::rows is 0";
     }
 }
 

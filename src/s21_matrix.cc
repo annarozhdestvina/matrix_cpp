@@ -29,16 +29,18 @@ S21Matrix::S21Matrix(const S21Matrix& other) :
 
 void S21Matrix::MulMatrix(const S21Matrix& other) {
     S21Matrix temp(rows_, other.cols_);
-    if (rows_ == other.cols_) {
-        for(int i = 0; i < rows_; i++) {
-            for(int j = 0; j < other.cols_; j++) {
-                temp.matrix_[i][j] = 0;
-                for(int inner = 0; inner < cols_; inner++)
-                    temp.matrix_[i][j] += matrix_[i][inner] * other.matrix_[inner][j];
-            }
+    if (rows_ != other.cols_) {
+        throw std::out_of_range("the number of columns of the first matrix is not equal to the number of rows of the second matrix");
+    }
+
+    for(int i = 0; i < rows_; i++) {
+        for(int j = 0; j < other.cols_; j++) {
+            temp.matrix_[i][j] = 0;
+            for(int inner = 0; inner < cols_; inner++)
+                temp.matrix_[i][j] += matrix_[i][inner] * other.matrix_[inner][j];
         }
-    } else
-        std::cout << "error calc\n";
+    }
+    
     *this = temp;
 }
 
@@ -247,11 +249,6 @@ void S21Matrix::Fill() {
     }
 }
 
-void S21Matrix::FillC() {
-    Fill();
-    matrix_[2][2] = 25;
-}
-
 S21Matrix S21Matrix::Transpose() {
     S21Matrix temp(cols_, rows_);
 
@@ -282,13 +279,13 @@ S21Matrix S21Matrix::do_lit(int row_del, int col_del) const {
 }
 
 double S21Matrix::Determinant() const  {
-    if (rows_ != cols_)
-        throw std::out_of_range("the matrix is not square");
-    
     if (rows_ == 0)
         throw std::out_of_range("rows is 0");
     if (cols_ == 0)
         throw std::out_of_range("columns is 0");
+
+    if (rows_ != cols_)
+        throw std::out_of_range("the matrix is not square");
     
 
     assert(rows_ > 0 && "rows is 0 or negative");
@@ -315,8 +312,6 @@ int minus_one_pow(int pow) {
 
 
 S21Matrix S21Matrix::CalcComplements() {
-    if (rows_ != cols_)
-        throw std::out_of_range("the matrix is not square");
     
     if (rows_ == 0)
         throw std::out_of_range("rows is 0");
@@ -324,6 +319,8 @@ S21Matrix S21Matrix::CalcComplements() {
         throw std::out_of_range("columns is 0");
     if (cols_ == 1 && rows_ == 1)
         throw std::out_of_range("inappropriate matrix rows and cols should be > 1");
+    if (rows_ != cols_)
+        throw std::out_of_range("the matrix is not square");
 
     S21Matrix temp(rows_, cols_);
     for(int i = 0; i < rows_; i++)
