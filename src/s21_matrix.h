@@ -46,23 +46,8 @@ public:
     friend S21Matrix operator-(const S21Matrix &a, const S21Matrix &b);
     friend S21Matrix operator*(const S21Matrix &a, const S21Matrix &b);
 
-    // S21Matrix& operator+=(const S21Matrix &other);
-    S21Matrix& operator+=(const S21Matrix &other)
-	{
-		if (other.rows_ != rows_ || other.cols_ != cols_) {
-            throw std::out_of_range("Different matrix dimensions");
-        }
-        rows_ = other.rows_;
-        cols_ = other.cols_;
-
-        // for(int i = 0; i < rows_; i++) 
-                // for(int j = 0; j < cols_; j++) 
-                    // matrix_[i][j] += other.matrix_[i][j];
-        S21Matrix::SumMatrix(other);
- 
-		// Возвращаем текущий объект, чтобы иметь возможность выполнять цепочку операций с +=
-		return *this;
-	}
+    S21Matrix& operator+=(const S21Matrix &other);
+    S21Matrix& operator-=(const S21Matrix &other);
 
     void MulNumber(const double num);
     void MulMatrix(const S21Matrix& other);

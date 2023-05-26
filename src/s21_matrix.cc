@@ -113,6 +113,31 @@ double& S21Matrix::operator()(int row, int col)//перегрузка кругл
     return (matrix_[row][col]);  //означать i,j-тый элемент матрицы
 }
 
+S21Matrix& S21Matrix::operator-=(const S21Matrix &other) {
+    if (other.rows_ != rows_ || other.cols_ != cols_) {
+        throw std::out_of_range("Different matrix dimensions");
+    }
+
+    rows_ = other.rows_;
+    cols_ = other.cols_;
+
+    S21Matrix::SubMatrix(other);
+
+    return *this;
+}
+
+S21Matrix& S21Matrix::operator+=(const S21Matrix &other) {
+	if (other.rows_ != rows_ || other.cols_ != cols_) {
+        throw std::out_of_range("Different matrix dimensions");
+    }
+    rows_ = other.rows_;
+    cols_ = other.cols_;
+    S21Matrix::SumMatrix(other);
+
+	// Возвращаем текущий объект, чтобы иметь возможность выполнять цепочку операций с +=
+	return *this;
+}
+
 S21Matrix operator+(const S21Matrix& a, const S21Matrix& b) {
     if (a.cols_ != b.cols_ || a.rows_ != b.rows_) {
             throw std::out_of_range("Different matrix dimensions");
@@ -154,31 +179,28 @@ S21Matrix operator*(const S21Matrix &a, const S21Matrix &b) {
 }
 
 void S21Matrix::SumMatrix(const S21Matrix& other) {
-    bool a;
-    a = EqMatrix(other);
-    std::cout << a <<std::endl;
     if (cols_ != other.cols_ || rows_ != other.rows_) {
         throw std::out_of_range("Different matrix dimensions");
     }
-    if (a) {
-        for(int i = 0; i < rows_; i++) {
-                for(int j = 0; j < cols_; j++) {
-                    matrix_[i][j] += other.matrix_[i][j];
-                }
+    
+    for(int i = 0; i < rows_; i++) {
+            for(int j = 0; j < cols_; j++) {
+                matrix_[i][j] += other.matrix_[i][j];
             }
         }
+        
 }
 
 void S21Matrix::SubMatrix(const S21Matrix& other) {
-    bool a;
-    a = EqMatrix(other);
-    if (a) {
-        for(int i = 0; i < rows_; i++) {
-                for(int j = 0; j < cols_; j++) {
-                    matrix_[i][j] -= other.matrix_[i][j];
-                }
+    if (cols_ != other.cols_ || rows_ != other.rows_) {
+        throw std::out_of_range("Different matrix dimensions");
+    }
+
+    for(int i = 0; i < rows_; i++) {
+            for(int j = 0; j < cols_; j++) {
+                matrix_[i][j] -= other.matrix_[i][j];
             }
-        }
+    }     
 }
 
 bool S21Matrix::EqMatrix(const S21Matrix& other) const {
