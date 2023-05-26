@@ -28,9 +28,6 @@ TEST(complex_sum_operator, test2) {
     m1.Fill();
 
     S21Matrix m2(3, 3);
-    // m2.Fill();
-    // m2 += m1;
-    // m2.Print();
 
     try {
         m2 += m1;
@@ -48,8 +45,10 @@ TEST(complex_sum_operator, test3) {
     S21Matrix m1(2, 3);
     m1.Fill();
 
-    S21Matrix m2(m1);
+    S21Matrix m2(2, 3);
+    m2.Fill();
     m2 += m1;
+    m2.Print();
 
     S21Matrix m3(2, 3);
     m3(0, 0) = 2.0;
@@ -57,8 +56,9 @@ TEST(complex_sum_operator, test3) {
     m3(0, 2) = 6.0;
     m3(1, 0) = 8.0;
     m3(1, 1) = 10.0;
-    m3(1, 1) = 12.0;
+    m3(1, 2) = 12.0;
+
+    m3.Print();
 
     EXPECT_TRUE(m2.EqMatrix(m3));
-
 }

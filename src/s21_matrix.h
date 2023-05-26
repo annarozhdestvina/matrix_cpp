@@ -49,11 +49,9 @@ public:
     // S21Matrix& operator+=(const S21Matrix &other);
     S21Matrix& operator+=(const S21Matrix &other)
 	{
-		// Увеличиваем сумму всех полученных значений новым значением
-		// m_total += num;
-		// И добавляем единицу к общему количеству полученных чисел
-		// ++m_numbers;
-        // S21Matrix::SumMatrix(other);
+		if (other.rows_ != rows_ || other.cols_ != cols_) {
+            throw std::out_of_range("Different matrix dimensions");
+        }
         rows_ = other.rows_;
         cols_ = other.cols_;
 
