@@ -96,3 +96,24 @@ TEST(mul_matrix, test3) {
     
     EXPECT_TRUE(m1.EqMatrix(m3));
 }
+
+TEST(mul_matrix, test4) {
+    S21Matrix m1(2, 3);
+    m1.Fill();
+
+    S21Matrix m2(3, 2);
+    m2(0, 0) = 0;
+    m2(0, 1) = 0;
+    m2(1, 0) = 0;
+    m2(1, 1) = 0;
+
+    m1.MulMatrix(m2);
+
+    S21Matrix m3(2, 2);
+    m3(0, 0) = 0;
+    m3(0, 1) = 0;
+    m3(1, 0) = 0;
+    m3(1, 1) = 0;
+
+    EXPECT_TRUE(m1.EqMatrix(m3));
+}
