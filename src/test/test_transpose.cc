@@ -4,7 +4,6 @@
 TEST(transpose, test1) {
     S21Matrix m1(3, 4);
     m1.Fill();
-    m1.Print();
 
     S21Matrix temp = m1.Transpose();
 
