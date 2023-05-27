@@ -227,13 +227,18 @@ bool S21Matrix::EqMatrix(const S21Matrix& other) const {
 
     for(int i = 0; i < rows_; i++) 
         for(int j = 0; j < cols_; j++) 
-            if (s21_fabs(matrix_[i][j] - other.matrix_[i][j]) > 1e-7) 
+            if (s21_fabs(matrix_[i][j] - other.matrix_[i][j]) > 1e-9) 
                 return false;
     
     return true;
 }
 
 S21Matrix::S21Matrix(int rows, int columns): rows_(rows), cols_(columns) {
+    if (rows_ == 0)
+        throw std::out_of_range("rows is 0");
+    if (cols_ == 0)
+        throw std::out_of_range("columns is 0");
+
     matrix_= new double* [rows_]; 
     for(int i = 0; i < rows_; i++) 
         matrix_[i] = new double[cols_] {}; //initialize all matrix[i][j] with 0.0

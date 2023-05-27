@@ -34,8 +34,6 @@ TEST(operator_mul_matrix, test2) {
 
     m1 *= m2;
 
-    m1.Print();
-
     S21Matrix m3(2, 2);
     m3(0, 0) = 0.0;
     m3(0, 1) = 0.0;
