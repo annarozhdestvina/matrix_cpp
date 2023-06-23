@@ -42,6 +42,7 @@ void S21Matrix::MulMatrix(const S21Matrix& other) {
     }
     
     *this = temp;
+    // destroy temp
 }
 
 bool operator==(const S21Matrix &a, const S21Matrix &b) {
@@ -87,6 +88,56 @@ int S21Matrix::GetRow() { //функция получает значение ч�
 
 int S21Matrix::GetCol() { //функция получает значение числа столбцов
     return (cols_);
+}
+
+void S21Matrix::SetRow(const int number) {
+    if (number <= 0 )
+        throw std::out_of_range("row cant be negative or 0");
+
+    S21Matrix temp(number, cols_);
+
+    if (rows_ < number) {
+        for(int i = 0; i < rows_; i++) 
+            for(int j = 0; j < cols_; j++) 
+                temp.matrix_[i][j] = matrix_[i][j];
+        for (int i = rows_; i < number; i++)  
+            for(int j = 0; j < cols_; j++) 
+                temp.matrix_[i][j] = 0;  
+    temp.rows_ = number;
+    }
+
+    if (rows_ > number) {
+        for(int i = 0; i < number; i++) 
+            for(int j = 0; j < cols_; j++) 
+                temp.matrix_[i][j] = matrix_[i][j];
+    temp.rows_ = number;    
+    }
+    *this = temp;
+}
+
+void S21Matrix::SetCol(const int number) {
+    if (number <= 0 )
+        throw std::out_of_range("row cant be negative or 0");
+
+    S21Matrix temp(rows_, number);
+
+    if (cols_ < number) {
+        for(int i = 0; i < rows_; i++) 
+            for(int j = 0; j < cols_; j++) 
+                temp.matrix_[i][j] = matrix_[i][j];
+        for (int i = 0; i < rows_; i++)  
+            for(int j = cols_; j < number; j++) 
+                temp.matrix_[i][j] = 0;  
+    temp.cols_ = number;
+    }
+
+    if (cols_ > number) {
+        for(int i = 0; i < rows_; i++) 
+            for(int j = 0; j < number; j++) 
+                temp.matrix_[i][j] = matrix_[i][j];
+    temp.cols_ = number;    
+    }
+    *this = temp;
 }
 
 double S21Matrix::operator()(int row_index, int col_index) const//перегрузка круглых скобок для матрицы.

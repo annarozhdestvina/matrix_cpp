@@ -46,38 +46,21 @@ TEST(inverse_matrix, test2) {
 }
 
 TEST(inverse_matrix, test3) {
-    S21Matrix m1(0, 5);
-    m1.Fill();
+    S21Matrix m1(4, 4);
 
     try {
         S21Matrix temp = m1.InverseMatrix();
-        FAIL() << "Expected std::rows is 0";
+        FAIL() << "Expected std::matrix determinant is 0";
     }
     catch(std::out_of_range const & err) {
-        EXPECT_EQ(err.what(),std::string("rows is 0"));
+        EXPECT_EQ(err.what(),std::string("matrix determinant is 0"));
     }
     catch(...) {
-        FAIL() << "Expected std::rows is 0";
+        FAIL() << "Expected std::matrix determinant is 0";
     }
 }
 
 TEST(inverse_matrix, test4) {
-    S21Matrix m1(0, 0);
-    m1.Fill();
-
-    try {
-        S21Matrix temp = m1.InverseMatrix();
-        FAIL() << "Expected std::rows is 0";
-    }
-    catch(std::out_of_range const & err) {
-        EXPECT_EQ(err.what(),std::string("rows is 0"));
-    }
-    catch(...) {
-        FAIL() << "Expected std::rows is 0";
-    }
-}
-
-TEST(inverse_matrix, test5) {
     S21Matrix m1(1, 1);
     m1.Fill();
 

@@ -10,8 +10,6 @@ public:
     ~S21Matrix();               // Destructor
 
     S21Matrix(const S21Matrix& other);
-
-    //int S21Matrix2; 
     
     void SumMatrix(const S21Matrix& other); 
     void SubMatrix(const S21Matrix& other); 
@@ -35,6 +33,8 @@ public:
     bool EqMatrix(const S21Matrix& other) const;
     int GetRow(); //метод получает значение числа строк
     int GetCol(); //метод получает значение числа столбцов
+    void SetRow(const int number);
+    void SetCol(const int number);
     double& operator()(int, int); //перегрузка скобок для матрицы
     double operator()(int, int) const; //перегрузка скобок для матрицы
 
