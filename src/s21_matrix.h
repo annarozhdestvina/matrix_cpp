@@ -30,6 +30,8 @@ public:
 
     void Print() const;
 
+    S21Matrix(S21Matrix &&other);
+
     bool EqMatrix(const S21Matrix& other) const;
     int GetRow(); //метод получает значение числа строк
     int GetCol(); //метод получает значение числа столбцов

@@ -419,6 +419,18 @@ S21Matrix S21Matrix::InverseMatrix() {
     return temp;
 }
 
+S21Matrix::S21Matrix(S21Matrix &&other) {
+    std::cout << "S21Matrix(S21Matrix &&other)\n";
+    
+    rows_ = other.rows_;
+    cols_ = other.cols_;
+
+    matrix_ = other.matrix_;
+    other.matrix_ = nullptr;
+    other.rows_ = 0;
+    other.cols_ = 0;
+}
+
 S21Matrix::~S21Matrix() {             // Destructor
     for(int i = 0; i < rows_; i++) 
         delete[] matrix_[i];
