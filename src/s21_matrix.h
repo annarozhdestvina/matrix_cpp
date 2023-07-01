@@ -20,17 +20,20 @@ public:
     double Determinant() const;
     S21Matrix CalcComplements();
     S21Matrix InverseMatrix();
+private:
     S21Matrix do_lit(int row_del, int col_del) const;
 
+public:
     void Fill();
 
     double getMatrix() const {
         return **matrix_;
     }
 
-    void Print() const;
+    void Print() const noexcept;
 
     S21Matrix(S21Matrix &&other);
+    S21Matrix& operator=(S21Matrix &&other);
 
     bool EqMatrix(const S21Matrix& other) const;
     int GetRow(); //метод получает значение числа строк

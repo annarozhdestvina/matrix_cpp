@@ -3,11 +3,13 @@
 #include <cassert>
 #include <cmath>
 
+
+// order of methods
 double s21_fabs(double a) {
     return (a < 0.0) ? -a : a;
 }
 
-void S21Matrix::Print() const {
+void S21Matrix::Print() const noexcept {
     for(int i = 0; i < rows_; i++) {
         for(int j = 0; j < cols_; j++) {
             std::cout<< matrix_[i][j] << '\t';
@@ -41,7 +43,7 @@ void S21Matrix::MulMatrix(const S21Matrix& other) {
         }
     }
     
-    *this = temp;
+    *this = std::move(temp);
     // destroy temp
 }
 
@@ -420,7 +422,7 @@ S21Matrix S21Matrix::InverseMatrix() {
 }
 
 S21Matrix::S21Matrix(S21Matrix &&other) {
-    std::cout << "S21Matrix(S21Matrix &&other)\n";
+    // std::cout << "S21Matrix(S21Matrix &&other)\n";
     
     rows_ = other.rows_;
     cols_ = other.cols_;
@@ -429,6 +431,21 @@ S21Matrix::S21Matrix(S21Matrix &&other) {
     other.matrix_ = nullptr;
     other.rows_ = 0;
     other.cols_ = 0;
+}
+
+S21Matrix& S21Matrix::operator=(S21Matrix &&other) {
+    if(this == &other)
+        return *this;
+    
+    rows_ = other.rows_;
+    cols_ = other.cols_;
+    matrix_ = other.matrix_;
+
+    other.cols_ = 0;
+    other.rows_ = 0;
+    other.matrix_ = nullptr;
+
+    return *this;
 }
 
 S21Matrix::~S21Matrix() {             // Destructor
