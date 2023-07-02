@@ -3,10 +3,72 @@
 #include <cassert>
 #include <cmath>
 
+int minus_one_pow(int pow) { 
+    return (((pow + 1) % 2) * 2.0 - 1.0); 
+}
 
 // order of methods
 double s21_fabs(double a) {
     return (a < 0.0) ? -a : a;
+}
+
+S21Matrix S21Matrix::do_lit(int row_del, int col_del) const noexcept {
+    int size = rows_ - 1;
+    S21Matrix temp(size, size);
+    int i_l = 0;
+    for (int i_b = 0; i_b < rows_; i_b++) {
+        if(i_b != row_del) {
+            int j_l = 0;
+            for (int j_b = 0; j_b < cols_; j_b++) {
+                if(j_b != col_del) {
+                    temp.matrix_[i_l][j_l] = matrix_[i_b][j_b];
+                    ++j_l;
+                }
+            }
+            ++i_l;
+        }
+    }
+    return temp;
+}
+
+// Default constructor
+S21Matrix::S21Matrix(int rows, int columns): rows_(rows), cols_(columns) {
+    if (rows_ == 0)
+        throw std::out_of_range("rows is 0");
+    if (cols_ == 0)
+        throw std::out_of_range("columns is 0");
+
+    matrix_= new double* [rows_]; 
+    for(int i = 0; i < rows_; i++) 
+        matrix_[i] = new double[cols_] {}; //initialize all matrix[i][j] with 0.0
+}
+
+S21Matrix::~S21Matrix() {             // Destructor
+    for(int i = 0; i < rows_; i++) 
+        delete[] matrix_[i];
+    delete[] matrix_;
+    rows_ = 0;
+    cols_ = 0;
+}
+
+S21Matrix::S21Matrix(const S21Matrix& other) : 
+    rows_{other.rows_}, cols_{other.cols_}, matrix_{new double* [other.rows_]} {
+        for (int i = 0; i < rows_; i++) 
+            matrix_[i] = new double[other.cols_];
+        
+    for (int i = 0; i < other.rows_; i++) {
+        for (int j = 0; j < other.cols_; j++) 
+            matrix_[i][j] = other.matrix_[i][j];
+    }
+}
+
+void S21Matrix::Fill() noexcept {
+    int k = 1;
+    for(int i =0; i < rows_; i++) {
+        for(int j =0; j < cols_; j++) {
+            matrix_[i][j] = k++;
+        }
+    }
 }
 
 void S21Matrix::Print() const noexcept {
@@ -18,14 +80,125 @@ void S21Matrix::Print() const noexcept {
     }
 }
 
-S21Matrix::S21Matrix(const S21Matrix& other) : 
-    rows_{other.rows_}, cols_{other.cols_}, matrix_{new double* [other.rows_]} {
-        for (int i = 0; i < rows_; i++) 
-            matrix_[i] = new double[other.cols_];
-        
-    for (int i = 0; i < other.rows_; i++) {
-        for (int j = 0; j < other.cols_; j++) 
-            matrix_[i][j] = other.matrix_[i][j];
+void S21Matrix::SumMatrix(const S21Matrix& other) {
+    if (cols_ != other.cols_ || rows_ != other.rows_) {
+        throw std::out_of_range("Different matrix dimensions");
+    }
+    
+    for(int i = 0; i < rows_; i++) {
+        for(int j = 0; j < cols_; j++) {
+            matrix_[i][j] += other.matrix_[i][j];
+        }
+    }  
+}
+
+void S21Matrix::SubMatrix(const S21Matrix& other) {
+    if (cols_ != other.cols_ || rows_ != other.rows_) {
+        throw std::out_of_range("Different matrix dimensions");
+    }
+
+    for(int i = 0; i < rows_; i++) {
+            for(int j = 0; j < cols_; j++) {
+                matrix_[i][j] -= other.matrix_[i][j];
+            }
+    }     
+}
+
+S21Matrix S21Matrix::Transpose() noexcept{
+    S21Matrix temp(cols_, rows_);
+
+    for(int i = 0; i < rows_; i++)
+        for(int j = 0; j < cols_; j++)
+            temp.matrix_[j][i] = matrix_[i][j];
+
+    return temp;
+}
+
+double S21Matrix::Determinant() const  {
+    if (rows_ == 0)
+        throw std::out_of_range("rows is 0");
+    if (cols_ == 0)
+        throw std::out_of_range("columns is 0");
+
+    if (rows_ != cols_)
+        throw std::out_of_range("the matrix is not square");
+    
+
+    assert(rows_ > 0 && "rows is 0 or negative");
+
+    if(rows_ == 1)
+        return matrix_[0][0];
+    if (rows_ == 2)
+        return matrix_[0][0] * matrix_[1][1] - matrix_[1][0] * matrix_[0][1];
+
+    double det = 0.0;
+    int k = 1;
+    for(int i = 0; i < cols_; i++) {
+        const S21Matrix little = do_lit(i, 0);  // constructor not operator= because little is newly created
+        det = det + matrix_[i][0] * k * little.Determinant();
+        k = -k;
+    }
+
+    return det;
+}
+
+S21Matrix S21Matrix::CalcComplements() {
+    
+    if (rows_ == 0)
+        throw std::out_of_range("rows is 0");
+    if (cols_ == 0)
+        throw std::out_of_range("columns is 0");
+    if (cols_ == 1 && rows_ == 1)
+        throw std::out_of_range("inappropriate matrix rows and cols should be > 1");
+    if (rows_ != cols_)
+        throw std::out_of_range("the matrix is not square");
+
+    S21Matrix temp(rows_, cols_);
+    for(int i = 0; i < rows_; i++)
+        for(int j = 0; j < cols_; j++)
+            temp.matrix_[i][j] = matrix_[i][j];
+
+    for(int i = 0; i < rows_; i++) {
+        for (int j = 0; j < rows_; j++) {
+            const S21Matrix little = do_lit(i, j);
+            double det = 0.0;
+            det = little.Determinant();
+            temp.matrix_[i][j] =  det * minus_one_pow(i + j);
+        }
+    }
+    return temp;
+}
+
+S21Matrix S21Matrix::InverseMatrix() {
+    double det = 0.0;
+
+    S21Matrix temp(rows_, cols_);
+    for(int i = 0; i < rows_; i++)
+        for(int j = 0; j < cols_; j++)
+            temp.matrix_[i][j] = matrix_[i][j];
+    det = temp.Determinant();
+
+    if (det == 0)
+        throw std::out_of_range("matrix determinant is 0");
+    
+    S21Matrix first = temp.Transpose();
+
+    S21Matrix second = first.CalcComplements();
+   
+    for(int i = 0; i < rows_; i++) {
+        for(int j = 0; j < cols_; j++) {
+            temp.matrix_[i][j] = second.matrix_[i][j] / det;
+        }
+    }
+   
+    return temp;
+}
+
+void S21Matrix::MulNumber(const double num) noexcept{
+for(int i = 0; i < rows_; i++) {
+            for(int j = 0; j < cols_; j++) {
+                matrix_[i][j] *= num;
+            }
     }
 }
 
@@ -47,41 +220,41 @@ void S21Matrix::MulMatrix(const S21Matrix& other) {
     // destroy temp
 }
 
-bool operator==(const S21Matrix &a, const S21Matrix &b) {
-    return (a.EqMatrix(b)); 
+S21Matrix::S21Matrix(S21Matrix &&other) {
+    rows_ = other.rows_;
+    cols_ = other.cols_;
+
+    matrix_ = other.matrix_;
+    other.matrix_ = nullptr;
+    other.rows_ = 0;
+    other.cols_ = 0;
 }
 
-S21Matrix& S21Matrix::operator= (const S21Matrix &drob) {
-    // Проверка на самоприсваивание
-    if (this == &drob)
+S21Matrix& S21Matrix::operator=(S21Matrix &&other) {
+    if(this == &other)
         return *this;
+    
+    rows_ = other.rows_;
+    cols_ = other.cols_;
+    matrix_ = other.matrix_;
 
-    // освободить память
-    S21Matrix::~S21Matrix();
+    other.cols_ = 0;
+    other.rows_ = 0;
+    other.matrix_ = nullptr;
 
-    rows_ = drob.rows_;
-    cols_ = drob.cols_;
-
-    matrix_= new double* [rows_]; 
-    for(int i = 0; i < rows_; i++) 
-        matrix_[i] = new double[cols_];
-
-    // Выполняем копирование значений
-
-    for(int i = 0; i < rows_; i++)
-            for(int j = 0; j < drob.cols_; j++)
-                matrix_[i][j] = drob.matrix_[i][j];
- 
-    // Возвращаем текущий объект
     return *this;
 }
 
-void S21Matrix::MulNumber(const double num) {
-for(int i = 0; i < rows_; i++) {
-            for(int j = 0; j < cols_; j++) {
-                matrix_[i][j] *= num;
-            }
-    }
+bool S21Matrix::EqMatrix(const S21Matrix& other) const {
+    if (rows_ != other.rows_ || cols_ != other.cols_) 
+        return false;
+
+    for(int i = 0; i < rows_; i++) 
+        for(int j = 0; j < cols_; j++) 
+            if (s21_fabs(matrix_[i][j] - other.matrix_[i][j]) > 1e-9) 
+                return false;
+    
+    return true;
 }
 
 int S21Matrix::GetRow() { //функция получает значение числа строк
@@ -169,44 +342,33 @@ double& S21Matrix::operator()(int row, int col)//перегрузка кругл
     return (matrix_[row][col]);  //означать i,j-тый элемент матрицы
 }
 
-S21Matrix& S21Matrix::operator-=(const S21Matrix &other) {
-    if (other.rows_ != rows_ || other.cols_ != cols_) {
-        throw std::out_of_range("Different matrix dimensions");
-    }
+S21Matrix& S21Matrix::operator= (const S21Matrix &other) {
+    // Проверка на самоприсваивание
+    if (this == &other)
+        return *this;
+
+    // освободить память
+    S21Matrix::~S21Matrix();
 
     rows_ = other.rows_;
     cols_ = other.cols_;
 
-    S21Matrix::SubMatrix(other);
+    matrix_= new double* [rows_]; 
+    for(int i = 0; i < rows_; i++) 
+        matrix_[i] = new double[cols_];
 
+    // Выполняем копирование значений
+
+    for(int i = 0; i < rows_; i++)
+            for(int j = 0; j < other.cols_; j++)
+                matrix_[i][j] = other.matrix_[i][j];
+ 
+    // Возвращаем текущий объект
     return *this;
 }
 
-S21Matrix& S21Matrix::operator+=(const S21Matrix &other) {
-	if (other.rows_ != rows_ || other.cols_ != cols_) {
-        throw std::out_of_range("Different matrix dimensions");
-    }
-    rows_ = other.rows_;
-    cols_ = other.cols_;
-    S21Matrix::SumMatrix(other);
-
-	// Возвращаем текущий объект, чтобы иметь возможность выполнять цепочку операций с +=
-	return *this;
-}
-
-S21Matrix& S21Matrix::operator*=(const double number) {
-    S21Matrix::MulNumber(number);
-    return *this;
-}
-
-S21Matrix& S21Matrix::operator*=(const S21Matrix &other) {
-    // if (other.rows_ != rows_ || other.cols_ != cols_) {
-        // throw std::out_of_range("Different matrix dimensions");
-    // }
-    S21Matrix::MulMatrix(other);
-    // rows_ = other.rows_;
-    // cols_ = other.cols_;
-    return *this;
+bool operator==(const S21Matrix &a, const S21Matrix &b) {
+    return (a.EqMatrix(b)); 
 }
 
 S21Matrix operator+(const S21Matrix& a, const S21Matrix& b) {
@@ -249,210 +411,42 @@ S21Matrix operator*(const S21Matrix &a, const S21Matrix &b) {
     return temp;
 }
 
-void S21Matrix::SumMatrix(const S21Matrix& other) {
-    if (cols_ != other.cols_ || rows_ != other.rows_) {
+S21Matrix& S21Matrix::operator+=(const S21Matrix &other) {
+	if (other.rows_ != rows_ || other.cols_ != cols_) {
         throw std::out_of_range("Different matrix dimensions");
     }
-    
-    for(int i = 0; i < rows_; i++) {
-            for(int j = 0; j < cols_; j++) {
-                matrix_[i][j] += other.matrix_[i][j];
-            }
-        }
-        
+    rows_ = other.rows_;
+    cols_ = other.cols_;
+    S21Matrix::SumMatrix(other);
+
+	// Возвращаем текущий объект, чтобы иметь возможность выполнять цепочку операций с +=
+	return *this;
 }
 
-void S21Matrix::SubMatrix(const S21Matrix& other) {
-    if (cols_ != other.cols_ || rows_ != other.rows_) {
+S21Matrix& S21Matrix::operator-=(const S21Matrix &other) {
+    if (other.rows_ != rows_ || other.cols_ != cols_) {
         throw std::out_of_range("Different matrix dimensions");
     }
 
-    for(int i = 0; i < rows_; i++) {
-            for(int j = 0; j < cols_; j++) {
-                matrix_[i][j] -= other.matrix_[i][j];
-            }
-    }     
-}
-
-bool S21Matrix::EqMatrix(const S21Matrix& other) const {
-    if (rows_ != other.rows_ || cols_ != other.cols_) 
-        return false;
-
-    for(int i = 0; i < rows_; i++) 
-        for(int j = 0; j < cols_; j++) 
-            if (s21_fabs(matrix_[i][j] - other.matrix_[i][j]) > 1e-9) 
-                return false;
-    
-    return true;
-}
-
-S21Matrix::S21Matrix(int rows, int columns): rows_(rows), cols_(columns) {
-    if (rows_ == 0)
-        throw std::out_of_range("rows is 0");
-    if (cols_ == 0)
-        throw std::out_of_range("columns is 0");
-
-    matrix_= new double* [rows_]; 
-    for(int i = 0; i < rows_; i++) 
-        matrix_[i] = new double[cols_] {}; //initialize all matrix[i][j] with 0.0
-
-}
-
-void S21Matrix::Fill() {
-    int k = 1;
-    for(int i =0; i < rows_; i++) {
-        for(int j =0; j < cols_; j++) {
-            matrix_[i][j] = k++;
-        }
-    }
-}
-
-S21Matrix S21Matrix::Transpose() {
-    S21Matrix temp(cols_, rows_);
-
-    for(int i = 0; i < rows_; i++)
-        for(int j = 0; j < cols_; j++)
-            temp.matrix_[j][i] = matrix_[i][j];
-
-    return temp;
-}
-
-S21Matrix S21Matrix::do_lit(int row_del, int col_del) const {
-    int size = rows_ - 1;
-    S21Matrix temp(size, size);
-    int i_l = 0;
-    for (int i_b = 0; i_b < rows_; i_b++) {
-        if(i_b != row_del) {
-            int j_l = 0;
-            for (int j_b = 0; j_b < cols_; j_b++) {
-                if(j_b != col_del) {
-                    temp.matrix_[i_l][j_l] = matrix_[i_b][j_b];
-                    ++j_l;
-                }
-            }
-            ++i_l;
-        }
-    }
-    return temp;
-}
-
-double S21Matrix::Determinant() const  {
-    if (rows_ == 0)
-        throw std::out_of_range("rows is 0");
-    if (cols_ == 0)
-        throw std::out_of_range("columns is 0");
-
-    if (rows_ != cols_)
-        throw std::out_of_range("the matrix is not square");
-    
-
-    assert(rows_ > 0 && "rows is 0 or negative");
-
-    if(rows_ == 1)
-        return matrix_[0][0];
-    if (rows_ == 2)
-        return matrix_[0][0] * matrix_[1][1] - matrix_[1][0] * matrix_[0][1];
-
-    double det = 0.0;
-    int k = 1;
-    for(int i = 0; i < cols_; i++) {
-        const S21Matrix little = do_lit(i, 0);  // constructor not operator= because little is newly created
-        det = det + matrix_[i][0] * k * little.Determinant();
-        k = -k;
-    }
-
-    return det;
-}
-
-int minus_one_pow(int pow) { 
-    return (((pow + 1) % 2) * 2.0 - 1.0); 
-}
-
-
-S21Matrix S21Matrix::CalcComplements() {
-    
-    if (rows_ == 0)
-        throw std::out_of_range("rows is 0");
-    if (cols_ == 0)
-        throw std::out_of_range("columns is 0");
-    if (cols_ == 1 && rows_ == 1)
-        throw std::out_of_range("inappropriate matrix rows and cols should be > 1");
-    if (rows_ != cols_)
-        throw std::out_of_range("the matrix is not square");
-
-    S21Matrix temp(rows_, cols_);
-    for(int i = 0; i < rows_; i++)
-        for(int j = 0; j < cols_; j++)
-            temp.matrix_[i][j] = matrix_[i][j];
-
-    for(int i = 0; i < rows_; i++) {
-        for (int j = 0; j < rows_; j++) {
-            const S21Matrix little = do_lit(i, j);
-            double det = 0.0;
-            det = little.Determinant();
-            temp.matrix_[i][j] =  det * minus_one_pow(i + j);
-        }
-    }
-    return temp;
-}
-
-S21Matrix S21Matrix::InverseMatrix() {
-    double det = 0.0;
-
-    S21Matrix temp(rows_, cols_);
-    for(int i = 0; i < rows_; i++)
-        for(int j = 0; j < cols_; j++)
-            temp.matrix_[i][j] = matrix_[i][j];
-    det = temp.Determinant();
-
-    if (det == 0)
-        throw std::out_of_range("matrix determinant is 0");
-    
-    S21Matrix first = temp.Transpose();
-
-    S21Matrix second = first.CalcComplements();
-   
-    for(int i = 0; i < rows_; i++) {
-        for(int j = 0; j < cols_; j++) {
-            temp.matrix_[i][j] = second.matrix_[i][j] / det;
-        }
-    }
-   
-    return temp;
-}
-
-S21Matrix::S21Matrix(S21Matrix &&other) {
-    // std::cout << "S21Matrix(S21Matrix &&other)\n";
-    
     rows_ = other.rows_;
     cols_ = other.cols_;
 
-    matrix_ = other.matrix_;
-    other.matrix_ = nullptr;
-    other.rows_ = 0;
-    other.cols_ = 0;
-}
-
-S21Matrix& S21Matrix::operator=(S21Matrix &&other) {
-    if(this == &other)
-        return *this;
-    
-    rows_ = other.rows_;
-    cols_ = other.cols_;
-    matrix_ = other.matrix_;
-
-    other.cols_ = 0;
-    other.rows_ = 0;
-    other.matrix_ = nullptr;
+    S21Matrix::SubMatrix(other);
 
     return *this;
 }
 
-S21Matrix::~S21Matrix() {             // Destructor
-    for(int i = 0; i < rows_; i++) 
-        delete[] matrix_[i];
-    delete[] matrix_;
-    rows_ = 0;
-    cols_ = 0;
+S21Matrix& S21Matrix::operator*=(const double number) {
+    S21Matrix::MulNumber(number);
+    return *this;
 }
 
+S21Matrix& S21Matrix::operator*=(const S21Matrix &other) {
+    // if (other.rows_ != rows_ || other.cols_ != cols_) {
+        // throw std::out_of_range("Different matrix dimensions");
+    // }
+    S21Matrix::MulMatrix(other);
+    // rows_ = other.rows_;
+    // cols_ = other.cols_;
+    return *this;
+}
