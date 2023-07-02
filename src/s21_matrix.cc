@@ -31,7 +31,8 @@ S21Matrix S21Matrix::do_lit(int row_del, int col_del) const noexcept {
     return temp;
 }
 
-// Default constructor
+S21Matrix::S21Matrix() : rows_{0}, cols_{0}, matrix_{nullptr} {}; // Default constructor
+    
 S21Matrix::S21Matrix(int rows, int columns): rows_(rows), cols_(columns) {
     if (rows_ == 0)
         throw std::out_of_range("rows is 0");

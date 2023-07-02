@@ -8,7 +8,8 @@ private:
     S21Matrix do_lit(int row_del, int col_del) const noexcept;
 
 public:
-    S21Matrix() : rows_{0}, cols_{0}, matrix_{nullptr} {}; // Default constructor
+    S21Matrix(); // Default constructor
+    S21Matrix(int rows, int columns); 
     ~S21Matrix();               // Destructor
     S21Matrix(const S21Matrix& other);
     
@@ -18,7 +19,6 @@ public:
     // Other methods..
     void SumMatrix(const S21Matrix& other); 
     void SubMatrix(const S21Matrix& other); 
-    S21Matrix(int rows, int columns); //?????????????
 
     S21Matrix Transpose() noexcept;
     double Determinant() const;
