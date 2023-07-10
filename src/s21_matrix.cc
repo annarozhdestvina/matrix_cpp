@@ -7,7 +7,6 @@ int minus_one_pow(int pow) {
     return (((pow + 1) % 2) * 2.0 - 1.0); 
 }
 
-// order of methods
 double s21_fabs(double a) {
     return (a < 0.0) ? -a : a;
 }
