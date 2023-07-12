@@ -71,14 +71,14 @@ void S21Matrix::Fill() noexcept {
     }
 }
 
-void S21Matrix::Print() const noexcept {
-    for(int i = 0; i < rows_; i++) {
-        for(int j = 0; j < cols_; j++) {
-            std::cout<< matrix_[i][j] << '\t';
-        }
-        std::cout << '\n';
-    }
-}
+// void S21Matrix::Print() const noexcept {
+//     for(int i = 0; i < rows_; i++) {
+//         for(int j = 0; j < cols_; j++) {
+//             std::cout<< matrix_[i][j] << '\t';
+//         }
+//         std::cout << '\n';
+//     }
+// }
 
 void S21Matrix::SumMatrix(const S21Matrix& other) {
     if (cols_ != other.cols_ || rows_ != other.rows_) {
@@ -115,10 +115,10 @@ S21Matrix S21Matrix::Transpose() noexcept{
 }
 
 double S21Matrix::Determinant() const  {
-    if (rows_ == 0)
-        throw std::out_of_range("rows is 0");
-    if (cols_ == 0)
-        throw std::out_of_range("columns is 0");
+    // if (rows_ == 0)
+        // throw std::out_of_range("rows is 0");
+    // if (cols_ == 0)
+        // throw std::out_of_range("columns is 0");
 
     if (rows_ != cols_)
         throw std::out_of_range("the matrix is not square");
@@ -144,10 +144,10 @@ double S21Matrix::Determinant() const  {
 
 S21Matrix S21Matrix::CalcComplements() {
     
-    if (rows_ == 0)
-        throw std::out_of_range("rows is 0");
-    if (cols_ == 0)
-        throw std::out_of_range("columns is 0");
+    // if (rows_ == 0)
+        // throw std::out_of_range("rows is 0");
+    // if (cols_ == 0)
+        // throw std::out_of_range("columns is 0");
     if (cols_ == 1 && rows_ == 1)
         throw std::out_of_range("inappropriate matrix rows and cols should be > 1");
     if (rows_ != cols_)
@@ -406,8 +406,8 @@ S21Matrix operator*(const S21Matrix &a, const S21Matrix &b) {
                     temp.matrix_[i][j] += a.matrix_[i][inner] * b.matrix_[inner][j];
             }
         }
-    } else
-        std::cout << "error calc\n";
+    } //else
+    //     std::cout << "error calc\n";
     return temp;
 }
 

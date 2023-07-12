@@ -14,7 +14,7 @@ public:
     S21Matrix(const S21Matrix& other);
     
     void Fill() noexcept;
-    void Print() const noexcept;
+    // void Print() const noexcept;
 
     // Other methods..
     void SumMatrix(const S21Matrix& other); 

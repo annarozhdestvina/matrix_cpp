@@ -23,3 +23,15 @@ TEST(operator_move, test2) {
 
     EXPECT_TRUE(m3.EqMatrix(m2));
 }
+
+// TEST(operator_move, test3) {
+//     S21Matrix m1(3, 4);
+//     m1.Fill();
+//     m1.MulNumber(-2);
+//     S21Matrix m2 = (std::move(m1)); 
+
+//     m1 = m1; 
+
+
+//     EXPECT_TRUE(m2.EqMatrix(m1));
+// }

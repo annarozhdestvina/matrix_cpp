@@ -68,3 +68,20 @@ TEST(determinant, test6) {
 
     EXPECT_DOUBLE_EQ(-66.0, a);
 }
+
+TEST(determinant, test7) {
+    try {
+        S21Matrix m1(0, 3);
+        FAIL() << "Expected std::rows is 0";
+        m1.Fill();
+    
+        m1.Determinant();
+        FAIL() << "Expected std::rows is 0";
+    }
+    catch(std::out_of_range const & err) {
+        EXPECT_EQ(err.what(),std::string("rows is 0"));
+    }
+    catch(...) {
+        FAIL() << "Expected std::rows is 0";
+    }
+}
