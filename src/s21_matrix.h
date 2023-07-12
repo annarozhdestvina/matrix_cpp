@@ -14,7 +14,7 @@ public:
     S21Matrix(const S21Matrix& other);
     
     void Fill() noexcept;
-    // void Print() const noexcept;
+    void Print() const noexcept;
 
     // Other methods..
     void SumMatrix(const S21Matrix& other); 
@@ -25,10 +25,6 @@ public:
     S21Matrix CalcComplements();
     S21Matrix InverseMatrix();
 
-    double getMatrix() const {
-        return **matrix_;
-    }
-
     void MulNumber(const double num) noexcept;
     void MulMatrix(const S21Matrix& other);
 
@@ -36,12 +32,12 @@ public:
     S21Matrix& operator=(S21Matrix &&other);
 
     bool EqMatrix(const S21Matrix& other) const;
-    int GetRow(); //метод получает значение числа строк
-    int GetCol(); //метод получает значение числа столбцов
+    int GetRow();
+    int GetCol(); 
     void SetRow(const int number);
     void SetCol(const int number);
-    double operator()(int, int) const; //перегрузка скобок для матрицы
-    double& operator()(int, int); //перегрузка скобок для матрицы
+    double operator()(int, int) const; 
+    double& operator()(int, int); 
 
     S21Matrix& operator=(const S21Matrix &str);
     bool friend operator==(const S21Matrix &a, const S21Matrix &b);
@@ -52,6 +48,6 @@ public:
 
     S21Matrix& operator+=(const S21Matrix &other);
     S21Matrix& operator-=(const S21Matrix &other);
-    S21Matrix& operator*=(const double number);
+    S21Matrix& operator*=(const double number) noexcept;
     S21Matrix& operator*=(const S21Matrix &other);
 };

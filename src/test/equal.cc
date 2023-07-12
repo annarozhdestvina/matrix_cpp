@@ -88,26 +88,26 @@ TEST(equal, test9) {
 
     try {
         S21Matrix m2(0, 7);
-        FAIL() << "Expected std::rows is 0";
+        FAIL() << "Expected std::rows is 0 or negative";
     }
     catch(std::out_of_range const & err) {
-        EXPECT_EQ(err.what(),std::string("rows is 0"));
+        EXPECT_EQ(err.what(),std::string("rows is 0 or negative"));
     }
     catch(...) {
-        FAIL() << "Expected std::rows is 0";
+        FAIL() << "Expected std::rows is 0 or negative";
     }
 }
 
 TEST(equal, test10) {
     try {
         S21Matrix m2(3, 0);
-        FAIL() << "Expected std::columns is 0";
+        FAIL() << "Expected std::columns is 0 or negative";
     }
     catch(std::out_of_range const & err) {
-        EXPECT_EQ(err.what(),std::string("columns is 0"));
+        EXPECT_EQ(err.what(),std::string("columns is 0 or negative"));
     }
     catch(...) {
-        FAIL() << "Expected std::columns is 0";
+        FAIL() << "Expected std::columns is 0 or negative";
     }
 }
 

@@ -72,14 +72,14 @@ TEST(determinant, test6) {
 TEST(determinant, test7) {
     try {
         S21Matrix m1(0, 3);
-        FAIL() << "Expected std::rows is 0";
+        FAIL() << "Expected std::rows is 0 or negative";
         m1.Fill();
     
         m1.Determinant();
-        FAIL() << "Expected std::rows is 0";
+        FAIL() << "Expected std::rows is 0 or negative";
     }
     catch(std::out_of_range const & err) {
-        EXPECT_EQ(err.what(),std::string("rows is 0"));
+        EXPECT_EQ(err.what(),std::string("rows is 0 or negative"));
     }
     catch(...) {
         FAIL() << "Expected std::rows is 0";

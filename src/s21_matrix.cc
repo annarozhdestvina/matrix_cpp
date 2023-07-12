@@ -33,10 +33,10 @@ S21Matrix S21Matrix::do_lit(int row_del, int col_del) const noexcept {
 S21Matrix::S21Matrix() : rows_{0}, cols_{0}, matrix_{nullptr} {}; // Default constructor
     
 S21Matrix::S21Matrix(int rows, int columns): rows_(rows), cols_(columns) {
-    if (rows_ == 0)
-        throw std::out_of_range("rows is 0");
-    if (cols_ == 0)
-        throw std::out_of_range("columns is 0");
+    if (rows_ <= 0)
+        throw std::out_of_range("rows is 0 or negative");
+    if (cols_ <= 0)
+        throw std::out_of_range("columns is 0 or negative");
 
     matrix_= new double* [rows_]; 
     for(int i = 0; i < rows_; i++) 
@@ -47,6 +47,7 @@ S21Matrix::~S21Matrix() {             // Destructor
     for(int i = 0; i < rows_; i++) 
         delete[] matrix_[i];
     delete[] matrix_;
+    matrix_ = nullptr;
     rows_ = 0;
     cols_ = 0;
 }
@@ -71,14 +72,16 @@ void S21Matrix::Fill() noexcept {
     }
 }
 
-// void S21Matrix::Print() const noexcept {
-//     for(int i = 0; i < rows_; i++) {
-//         for(int j = 0; j < cols_; j++) {
-//             std::cout<< matrix_[i][j] << '\t';
-//         }
-//         std::cout << '\n';
-//     }
-// }
+// GCOVR_EXCL_START
+void S21Matrix::Print() const noexcept {
+    for(int i = 0; i < rows_; i++) {
+        for(int j = 0; j < cols_; j++) {
+            std::cout<< matrix_[i][j] << '\t';
+        }
+        std::cout << '\n';
+    }
+}
+// GCOV_EXCL_STOP
 
 void S21Matrix::SumMatrix(const S21Matrix& other) {
     if (cols_ != other.cols_ || rows_ != other.rows_) {
@@ -115,11 +118,6 @@ S21Matrix S21Matrix::Transpose() noexcept{
 }
 
 double S21Matrix::Determinant() const  {
-    // if (rows_ == 0)
-        // throw std::out_of_range("rows is 0");
-    // if (cols_ == 0)
-        // throw std::out_of_range("columns is 0");
-
     if (rows_ != cols_)
         throw std::out_of_range("the matrix is not square");
     
@@ -143,11 +141,6 @@ double S21Matrix::Determinant() const  {
 }
 
 S21Matrix S21Matrix::CalcComplements() {
-    
-    // if (rows_ == 0)
-        // throw std::out_of_range("rows is 0");
-    // if (cols_ == 0)
-        // throw std::out_of_range("columns is 0");
     if (cols_ == 1 && rows_ == 1)
         throw std::out_of_range("inappropriate matrix rows and cols should be > 1");
     if (rows_ != cols_)
@@ -195,7 +188,7 @@ S21Matrix S21Matrix::InverseMatrix() {
 }
 
 void S21Matrix::MulNumber(const double num) noexcept{
-for(int i = 0; i < rows_; i++) {
+    for(int i = 0; i < rows_; i++) {
             for(int j = 0; j < cols_; j++) {
                 matrix_[i][j] *= num;
             }
@@ -217,7 +210,6 @@ void S21Matrix::MulMatrix(const S21Matrix& other) {
     }
     
     *this = std::move(temp);
-    // destroy temp
 }
 
 S21Matrix::S21Matrix(S21Matrix &&other) {
@@ -234,6 +226,8 @@ S21Matrix& S21Matrix::operator=(S21Matrix &&other) {
     if(this == &other)
         return *this;
     
+    S21Matrix::~S21Matrix();
+
     rows_ = other.rows_;
     cols_ = other.cols_;
     matrix_ = other.matrix_;
@@ -258,16 +252,16 @@ bool S21Matrix::EqMatrix(const S21Matrix& other) const {
 }
 
 int S21Matrix::GetRow() { //функция получает значение числа строк
-    return (rows_);
+    return rows_;
 }
 
 int S21Matrix::GetCol() { //функция получает значение числа столбцов
-    return (cols_);
+    return cols_;
 }
 
 void S21Matrix::SetRow(const int number) {
     if (number <= 0 )
-        throw std::out_of_range("row cant be negative or 0");
+        throw std::out_of_range("row can't be negative or 0");
 
     S21Matrix temp(number, cols_);
 
@@ -292,7 +286,7 @@ void S21Matrix::SetRow(const int number) {
 
 void S21Matrix::SetCol(const int number) {
     if (number <= 0 )
-        throw std::out_of_range("row cant be negative or 0");
+        throw std::out_of_range("row can't be negative or 0");
 
     S21Matrix temp(rows_, number);
 
@@ -315,10 +309,8 @@ void S21Matrix::SetCol(const int number) {
     *this = temp;
 }
 
-double S21Matrix::operator()(int row_index, int col_index) const//перегрузка круглых скобок для матрицы.
-{                             // Если m - матрица, то m(i,j) будет
-           // 3           2
-// индекс от 0 включительно до размера не влючительно
+double S21Matrix::operator()(int row_index, int col_index) const
+{                             
     if (row_index >= rows_ || col_index >= cols_) {
             throw std::out_of_range("Index is outside the matrix");
         }
@@ -327,11 +319,11 @@ double S21Matrix::operator()(int row_index, int col_index) const//перегру
             throw std::out_of_range("Index is outside the matrix");
         }
 
-    return (matrix_[row_index][col_index]);  //означать i,j-тый элемент матрицы
+    return (matrix_[row_index][col_index]);  
 }
 
-double& S21Matrix::operator()(int row, int col)//перегрузка круглых скобок для матрицы.
-{                             // Если m - матрица, то m(i,j) будет
+double& S21Matrix::operator()(int row, int col)
+{                             
     if (row >= rows_ || col >= cols_) {
             throw std::out_of_range("Index is outside the matrix");
         }
@@ -339,7 +331,7 @@ double& S21Matrix::operator()(int row, int col)//перегрузка кругл
     if (row < 0 || col < 0) {
             throw std::out_of_range("Index is outside the matrix");
         }
-    return (matrix_[row][col]);  //означать i,j-тый элемент матрицы
+    return (matrix_[row][col]);  
 }
 
 S21Matrix& S21Matrix::operator= (const S21Matrix &other) {
@@ -360,9 +352,9 @@ S21Matrix& S21Matrix::operator= (const S21Matrix &other) {
     // Выполняем копирование значений
 
     for(int i = 0; i < rows_; i++)
-            for(int j = 0; j < other.cols_; j++)
-                matrix_[i][j] = other.matrix_[i][j];
- 
+        for(int j = 0; j < other.cols_; j++)
+            matrix_[i][j] = other.matrix_[i][j];
+
     // Возвращаем текущий объект
     return *this;
 }
@@ -398,16 +390,13 @@ S21Matrix operator*(const S21Matrix &a, const S21Matrix &b) {
         throw std::out_of_range("The number of columns of the first matrix does not equal the number of rows of the second matrix");
     }
     S21Matrix temp(a.rows_, b.cols_);
-    if(a.rows_ == b.cols_) {
-        for(int i = 0; i < a.rows_; i++) {
-            for(int j = 0; j < b.cols_; j++) {
-                temp.matrix_[i][j] = 0;
-                for(int inner = 0; inner < a.cols_; inner++)
-                    temp.matrix_[i][j] += a.matrix_[i][inner] * b.matrix_[inner][j];
-            }
+    for(int i = 0; i < a.rows_; i++) {
+        for(int j = 0; j < b.cols_; j++) {
+            temp.matrix_[i][j] = 0;
+            for(int inner = 0; inner < a.cols_; inner++)
+                temp.matrix_[i][j] += a.matrix_[i][inner] * b.matrix_[inner][j];
         }
-    } //else
-    //     std::cout << "error calc\n";
+    }
     return temp;
 }
 
@@ -417,7 +406,7 @@ S21Matrix& S21Matrix::operator+=(const S21Matrix &other) {
     }
     rows_ = other.rows_;
     cols_ = other.cols_;
-    S21Matrix::SumMatrix(other);
+    SumMatrix(other);
 
 	// Возвращаем текущий объект, чтобы иметь возможность выполнять цепочку операций с +=
 	return *this;
@@ -431,22 +420,17 @@ S21Matrix& S21Matrix::operator-=(const S21Matrix &other) {
     rows_ = other.rows_;
     cols_ = other.cols_;
 
-    S21Matrix::SubMatrix(other);
+    SubMatrix(other);
 
     return *this;
 }
 
-S21Matrix& S21Matrix::operator*=(const double number) {
-    S21Matrix::MulNumber(number);
+S21Matrix& S21Matrix::operator*=(const double number) noexcept{
+    MulNumber(number);
     return *this;
 }
 
 S21Matrix& S21Matrix::operator*=(const S21Matrix &other) {
-    // if (other.rows_ != rows_ || other.cols_ != cols_) {
-        // throw std::out_of_range("Different matrix dimensions");
-    // }
-    S21Matrix::MulMatrix(other);
-    // rows_ = other.rows_;
-    // cols_ = other.cols_;
+    MulMatrix(other);
     return *this;
 }

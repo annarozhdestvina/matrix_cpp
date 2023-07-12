@@ -117,13 +117,13 @@ TEST(set_operator, test7) {
     
     try {
         m1.SetCol(-3);
-        FAIL() << "Expected std::row cant be negative or 0";
+        FAIL() << "Expected std::row can't be negative or 0";
     }
     catch(std::out_of_range const & err) {
-        EXPECT_EQ(err.what(),std::string("row cant be negative or 0"));
+        EXPECT_EQ(err.what(),std::string("row can't be negative or 0"));
     }
     catch(...) {
-        FAIL() << "Expected std::row cant be negative or 0";
+        FAIL() << "Expected std::row can't be negative or 0";
     }
 }
 
@@ -133,13 +133,13 @@ TEST(set_operator, test8) {
     
     try {
         m1.SetCol(0);
-        FAIL() << "Expected std::row cant be negative or 0";
+        FAIL() << "Expected std::row can't be negative or 0";
     }
     catch(std::out_of_range const & err) {
-        EXPECT_EQ(err.what(),std::string("row cant be negative or 0"));
+        EXPECT_EQ(err.what(),std::string("row can't be negative or 0"));
     }
     catch(...) {
-        FAIL() << "Expected std::row cant be negative or 0";
+        FAIL() << "Expected std::row can't be negative or 0";
     }
 }
 
@@ -149,13 +149,13 @@ TEST(set_operator, test9) {
     
     try {
         m1.SetRow(-3);
-        FAIL() << "Expected std::row cant be negative or 0";
+        FAIL() << "Expected std::row can't be negative or 0";
     }
     catch(std::out_of_range const & err) {
-        EXPECT_EQ(err.what(),std::string("row cant be negative or 0"));
+        EXPECT_EQ(err.what(),std::string("row can't be negative or 0"));
     }
     catch(...) {
-        FAIL() << "Expected std::row cant be negative or 0";
+        FAIL() << "Expected std::row can't be negative or 0";
     }
 }
 
@@ -165,12 +165,19 @@ TEST(set_operator, test10) {
     
     try {
         m1.SetRow(0);
-        FAIL() << "Expected std::row cant be negative or 0";
+        FAIL() << "Expected std::row can't be negative or 0";
     }
     catch(std::out_of_range const & err) {
-        EXPECT_EQ(err.what(),std::string("row cant be negative or 0"));
+        EXPECT_EQ(err.what(),std::string("row can't be negative or 0"));
     }
     catch(...) {
-        FAIL() << "Expected std::row cant be negative or 0";
+        FAIL() << "Expected std::row can't be negative or 0";
     }
+}
+
+TEST(set_operator, test11) {
+    S21Matrix m1(3, 4);
+    m1.Fill(); 
+    
+    EXPECT_THROW(m1.SetRow(0), std::out_of_range);
 }

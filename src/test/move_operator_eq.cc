@@ -5,7 +5,7 @@ TEST(move_operator_eq, test1) {
     S21Matrix m1(3, 4);
     m1.Fill();
 
-    S21Matrix copied(m1);
+    const S21Matrix copied(m1);
 
     S21Matrix moved(3, 5);
     moved = std::move(m1);

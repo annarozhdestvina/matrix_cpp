@@ -33,7 +33,8 @@ TEST(operator_indexation, test2) {
 TEST(operator_indexation, test3) {
     S21Matrix const m1(3, 3);
     try {
-        double b = m1(4, 8);  // проверяем на выход из индекса матрицы
+        // double b = m1(4, 8);  // проверяем на выход из индекса матрицы
+        m1(4, 8);  // проверяем на выход из индекса матрицы
         FAIL() << "Expected std::Index is outside the matrix";
     }
     catch(std::out_of_range const & err) {
@@ -47,7 +48,8 @@ TEST(operator_indexation, test3) {
 TEST(operator_indexation, test4) {
     S21Matrix const m1(3, 3);
     try {
-        double b = m1(-4, -8);  // проверяем на выход из индекса матрицы
+        // double b = m1(-4, -8);  // проверяем на выход из индекса матрицы
+        m1(-4, -8);  // проверяем на выход из индекса матрицы
         FAIL() << "Expected std::Index is outside the matrix";
     }
     catch(std::out_of_range const & err) {
