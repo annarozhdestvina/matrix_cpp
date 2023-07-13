@@ -53,3 +53,36 @@ TEST(void_sum_matrix, test2) {
         FAIL() << "Expected std::different matrix dimensions";
     }
 }
+
+TEST(void_sum_matrix, test3) {
+    S21Matrix m1(2, 3);
+    m1.Fill();
+    m1.MulNumber(-1);
+
+    S21Matrix m2(2, 3);
+    m2(0, 0) = 2.0;
+    m2(0, 1) = 4.0;
+    m2(0, 2) = 6.0;
+    m2(1, 0) = 8.0;
+    m2(1, 1) = 10.0;
+    m2(1, 2) = 12.0;
+    
+    m2.SumMatrix(m1);
+
+    S21Matrix m3(2, 3);
+    m3.Fill();
+
+    EXPECT_TRUE(m2.EqMatrix(m3));
+}
+
+TEST(void_sum_matrix, test4) {
+    S21Matrix m1(2, 3);
+
+    S21Matrix m2(2, 3);
+    
+    m2.SumMatrix(m1);
+
+    S21Matrix m3(2, 3);
+
+    EXPECT_TRUE(m2.EqMatrix(m3));
+}

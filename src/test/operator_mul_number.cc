@@ -52,3 +52,20 @@ TEST(operator_mul_number, test3) {
 
     EXPECT_TRUE(m1.EqMatrix(m2));
 }
+
+TEST(operator_mul_number, test4) {
+    S21Matrix m1(2, 3);
+    m1.Fill();
+
+    m1 *= -3.1;
+
+    S21Matrix m2(2, 3);
+    m2(0, 0) = -3.1;
+    m2(0, 1) = -6.2;
+    m2(0, 2) = -9.3;
+    m2(1, 0) = -12.4;
+    m2(1, 1) = -15.5;
+    m2(1, 2) = -18.6;
+
+    EXPECT_TRUE(m1.EqMatrix(m2));
+}

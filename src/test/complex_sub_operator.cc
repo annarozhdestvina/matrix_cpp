@@ -58,3 +58,18 @@ TEST(complex_sub_operator, test3) {
     EXPECT_TRUE(m2.EqMatrix(m3));
 }
 
+TEST(complex_sub_operator, test4) {
+    S21Matrix m1(2, 3);
+    m1.Fill();
+
+    S21Matrix m2(2, 3);
+    m2.Fill();
+
+    m2 -= m1;
+
+    S21Matrix m3(2, 3);
+
+    EXPECT_TRUE(m2.EqMatrix(m3));
+}
+
+

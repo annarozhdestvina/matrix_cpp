@@ -56,3 +56,44 @@ TEST(complex_sum_operator, test3) {
 
     EXPECT_TRUE(m2.EqMatrix(m3));
 }
+
+
+TEST(complex_sum_operator, test4) {
+    S21Matrix m1(2, 3);
+    m1.Fill();
+
+    S21Matrix m2(2, 3);
+    m2.Fill();
+    m2.MulNumber(-3);
+    m2 += m1;
+
+    S21Matrix m3(2, 3);
+    m3(0, 0) = -2.0;
+    m3(0, 1) = -4.0;
+    m3(0, 2) = -6.0;
+    m3(1, 0) = -8.0;
+    m3(1, 1) = -10.0;
+    m3(1, 2) = -12.0;
+
+    EXPECT_TRUE(m2.EqMatrix(m3));
+}
+
+TEST(complex_sum_operator, test5) {
+    S21Matrix m1(2, 3);
+    m1.Fill();
+
+    S21Matrix m2(2, 3);
+    m2.Fill();
+    m2.MulNumber(-1);
+    m2 += m1;
+
+    S21Matrix m3(2, 3);
+    m3(0, 0) = 0;
+    m3(0, 1) = 0;
+    m3(0, 2) = 0;
+    m3(1, 0) = 0;
+    m3(1, 1) = 0;
+    m3(1, 2) = 0;
+
+    EXPECT_TRUE(m2.EqMatrix(m3));
+}

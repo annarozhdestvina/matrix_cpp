@@ -57,19 +57,16 @@ S21Matrix::S21Matrix(const S21Matrix& other) :
         for (int i = 0; i < rows_; i++) 
             matrix_[i] = new double[other.cols_];
         
-    for (int i = 0; i < other.rows_; i++) {
+    for (int i = 0; i < other.rows_; i++)
         for (int j = 0; j < other.cols_; j++) 
             matrix_[i][j] = other.matrix_[i][j];
-    }
 }
 
 void S21Matrix::Fill() noexcept {
     int k = 1;
-    for(int i =0; i < rows_; i++) {
-        for(int j =0; j < cols_; j++) {
+    for(int i =0; i < rows_; i++)
+        for(int j =0; j < cols_; j++)
             matrix_[i][j] = k++;
-        }
-    }
 }
 
 // GCOVR_EXCL_START
@@ -88,11 +85,9 @@ void S21Matrix::SumMatrix(const S21Matrix& other) {
         throw std::out_of_range("Different matrix dimensions");
     }
     
-    for(int i = 0; i < rows_; i++) {
-        for(int j = 0; j < cols_; j++) {
+    for(int i = 0; i < rows_; i++)
+        for(int j = 0; j < cols_; j++)
             matrix_[i][j] += other.matrix_[i][j];
-        }
-    }  
 }
 
 void S21Matrix::SubMatrix(const S21Matrix& other) {
@@ -100,11 +95,9 @@ void S21Matrix::SubMatrix(const S21Matrix& other) {
         throw std::out_of_range("Different matrix dimensions");
     }
 
-    for(int i = 0; i < rows_; i++) {
-            for(int j = 0; j < cols_; j++) {
-                matrix_[i][j] -= other.matrix_[i][j];
-            }
-    }     
+    for(int i = 0; i < rows_; i++) 
+            for(int j = 0; j < cols_; j++) 
+                matrix_[i][j] -= other.matrix_[i][j]; 
 }
 
 S21Matrix S21Matrix::Transpose() noexcept{
@@ -178,21 +171,18 @@ S21Matrix S21Matrix::InverseMatrix() {
 
     S21Matrix second = first.CalcComplements();
    
-    for(int i = 0; i < rows_; i++) {
-        for(int j = 0; j < cols_; j++) {
+    for(int i = 0; i < rows_; i++)
+        for(int j = 0; j < cols_; j++)
             temp.matrix_[i][j] = second.matrix_[i][j] / det;
-        }
-    }
-   
+        
     return temp;
 }
 
 void S21Matrix::MulNumber(const double num) noexcept{
-    for(int i = 0; i < rows_; i++) {
-            for(int j = 0; j < cols_; j++) {
-                matrix_[i][j] *= num;
-            }
-    }
+    for(int i = 0; i < rows_; i++)
+        for(int j = 0; j < cols_; j++) 
+            matrix_[i][j] *= num;
+            
 }
 
 void S21Matrix::MulMatrix(const S21Matrix& other) {

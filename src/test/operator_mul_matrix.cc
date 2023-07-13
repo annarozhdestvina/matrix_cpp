@@ -66,4 +66,14 @@ TEST(operator_mul_matrix, test3) {
     EXPECT_TRUE(m1.EqMatrix(m2));
 }
 
+TEST(operator_mul_matrix, test4) {
+    S21Matrix m1(4, 3);
+    m1.Fill();
+
+    S21Matrix m2(7, 7);
+    m2.Fill();
+
+    EXPECT_THROW(m1.MulMatrix(m2), std::out_of_range);
+}
+
  
